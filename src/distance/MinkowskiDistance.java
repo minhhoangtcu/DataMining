@@ -1,6 +1,9 @@
 package distance;
 
-import java.util.Map;
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.swing.JTable.PrintMode;
 
 public class MinkowskiDistance {
 	
@@ -15,7 +18,7 @@ public class MinkowskiDistance {
 	 * @param the second person.
 	 * @return the distance between the 2 provided people. 
 	 */
-	public double computerMinkowski(int r, Map<String, Double> firstPerson, Map<String, Double> secondPerson) {	
+	public double computeMinkowski(int r, Map<String, Double> firstPerson, Map<String, Double> secondPerson) {	
 		float distance = 0;
 		for (String key: firstPerson.keySet()) {
 			if (secondPerson.containsKey(key)) {
@@ -24,4 +27,26 @@ public class MinkowskiDistance {
 		}
 		return Math.pow(distance, 1/r);
 	}
+	
+	public Person findNearest(int r, Person person, List<Person> people) {
+		Map<Double, Person> distances = new HashMap<>();
+		for (Person personInList: people) {
+			double distance = computeMinkowski(r, person.getRating(), personInList.getRating());
+			distances.put(distance ,personInList);
+		}
+		TreeMap<Double, Person> sortedDistances = new TreeMap<>(distances);
+		printMap(sortedDistances);
+		return sortedDistances.firstEntry().getValue();
+	}
+	
+	public void printMap(Map<Double, Person> map) {
+		System.out.println("--------------");
+		for (Entry<Double, Person> entry : map.entrySet()) {
+			System.out.println("Key : " + entry.getKey() 
+                                      + " Value : " + entry.getValue());
+		}
+	}
+ 
 }
+
+

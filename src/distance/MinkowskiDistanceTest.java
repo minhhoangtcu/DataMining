@@ -17,6 +17,8 @@ public class MinkowskiDistanceTest {
 	Map<String, Double> jordyn = new HashMap<String, Double>();
 	Map<String, Double> sam = new HashMap<String, Double>();
 	Map<String, Double> veronica = new HashMap<String, Double>();
+	List<Person> people = new ArrayList<Person>();
+	Person angelicaP, billP, chanP, danP, haileyP, jordynP, samP, veronicaP;
 	
 	public void initMap() {
 		angelica.put("Blues Traveler", 3.5);
@@ -77,13 +79,33 @@ public class MinkowskiDistanceTest {
 		veronica.put("The Strokes", 3.0);
 	}
 
+	public void initPeople() {
+		angelicaP = new Person("Angelica", angelica); people.add(angelicaP);
+		billP = new Person("Bill", bill); people.add(billP);
+		chanP = new Person("Chan", chan); people.add(chanP);
+		danP = new Person("Dan", dan); people.add(danP);
+		haileyP = new Person("Hailey", hailey); people.add(haileyP);
+		jordynP = new Person("Jordyn", jordyn); people.add(jordynP);
+		samP = new Person("Sam", sam); people.add(samP);
+		veronicaP = new Person("Veronica", veronica); people.add(veronicaP);
+	}
+	
 	@Test
 	public void computerMinkowski() {
 		initMap();
-		double d = distance.computerMinkowski(1, hailey, veronica);
+		double d = distance.computeMinkowski(1, hailey, veronica);
 		assertEquals(2.0, d, 0.001);
-		d = distance.computerMinkowski(1, hailey, jordyn);
+		d = distance.computeMinkowski(1, hailey, jordyn);
 		assertEquals(7.5, d, 0.001);
 	}
 
+	@Test
+	public void findNearest() {
+		initMap();
+		initPeople();
+		people.remove(haileyP);
+		assertEquals("fail", veronicaP, distance.findNearest(1, haileyP, people));
+		people.add(haileyP); people.remove(jordynP);
+		assertEquals("fail", veronicaP, distance.findNearest(1, jordynP, people));
+	}
 }
