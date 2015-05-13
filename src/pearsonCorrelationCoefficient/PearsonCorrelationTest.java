@@ -60,7 +60,12 @@ public class PearsonCorrelationTest {
 	@Test
 	public void correlationTest() {
 		initPeople();
+		Bands.initMap();
+		Bands.initPeople();
 		assertEquals(1, correlation.computeCorrelation(claraP, robertP), 0.00001);
+		assertEquals(-0.90405, correlation.computeCorrelation(Bands.angelicaP, Bands.billP), 0.00001);
+		assertEquals(0.42008, correlation.computeCorrelation(Bands.angelicaP, Bands.haileyP), 0.00001);
+		assertEquals(0.76397, correlation.computeCorrelation(Bands.angelicaP, Bands.jordynP), 0.00001);
 	}
 }
 
