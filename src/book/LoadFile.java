@@ -96,4 +96,8 @@ public class LoadFile {
 	private String stripPunctionMark(String text) {
 		return text.replaceAll("\"", "");
 	}
+	
+	public Map<Integer, Person> getPeople() {
+		return people;
+	}
 }

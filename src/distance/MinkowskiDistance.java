@@ -5,10 +5,25 @@ import java.util.Map.Entry;
 
 import javax.swing.JTable.PrintMode;
 
+import book.LoadFile;
+
 public class MinkowskiDistance {
 	
+	
+	
 	public static void main(String[] args) {
-		
+		MinkowskiDistance distance = new MinkowskiDistance();
+		distance.run();
+	}
+	
+	public void run() {
+		LoadFile load = new LoadFile();
+		load.loadUsers();
+		load.loadRating();
+		Person[] people = findNearestK(1, 3, 10, load.getPeople());
+		for (Person person: people) {
+			System.out.println(person.getID());
+		}
 	}
 
 	/*
@@ -45,12 +60,16 @@ public class MinkowskiDistance {
 		people.remove(id);
 		for (Person personInList: people.values()) {
 			double distance = computeMinkowski(r, person.getRating(), personInList.getRating());
+			if (distance != 0) System.out.println(id + " and " + personInList.getID() + " has " + distance);
 			distances.put(distance, personInList);
 		}
 		TreeMap<Double, Person> sortedDistances = new TreeMap<>(distances);
 		//printMap(sortedDistances);
 		
 		// Return the k nearest people
+		if (k > sortedDistances.size()) {
+			k = sortedDistances.size(); // If we cannot find 
+		}
 	    Set<Entry<Double, Person>> entrySet = sortedDistances.entrySet(); // Get a set of all the entries (key - value pairs) contained in the TreeMap
 	    Iterator<Entry<Double, Person>> it = entrySet.iterator(); // Obtain an Iterator for the entries Set
 		Person[] output = new Person[k];
@@ -58,6 +77,7 @@ public class MinkowskiDistance {
 			if (it.hasNext())
 				output[i] = it.next().getValue();
 		}
+		people.put(id, person);
 		return output;
 	}
 	
