@@ -12,5 +12,11 @@ public class LoadTest {
 	public void userLoadTest() {
 		load.loadUsers();
 	}
+	
+	@Test
+	public void ratingLoadTest() {
+		load.loadUsers();
+		load.loadRating();
+	}
 
 }
