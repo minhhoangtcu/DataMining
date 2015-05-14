@@ -4,10 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import distance.Person;
 
@@ -95,11 +93,7 @@ public class LoadFile {
 		}
 	}
 
-	
-	
 	private String stripPunctionMark(String text) {
 		return text.replaceAll("\"", "");
 	}
-
-	
 }

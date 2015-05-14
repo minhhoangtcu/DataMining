@@ -39,6 +39,28 @@ public class MinkowskiDistance {
 		return sortedDistances.firstEntry().getValue();
 	}
 	
+	public Person[] findNearestK(int r, int k, int id, Map<Integer, Person> people) {
+		Map<Double, Person> distances = new HashMap<>();
+		Person person = people.get(id);
+		people.remove(id);
+		for (Person personInList: people.values()) {
+			double distance = computeMinkowski(r, person.getRating(), personInList.getRating());
+			distances.put(distance, personInList);
+		}
+		TreeMap<Double, Person> sortedDistances = new TreeMap<>(distances);
+		//printMap(sortedDistances);
+		
+		// Return the k nearest people
+	    Set<Entry<Double, Person>> entrySet = sortedDistances.entrySet(); // Get a set of all the entries (key - value pairs) contained in the TreeMap
+	    Iterator<Entry<Double, Person>> it = entrySet.iterator(); // Obtain an Iterator for the entries Set
+		Person[] output = new Person[k];
+		for (int i = 0; i < k; i++) {
+			if (it.hasNext())
+				output[i] = it.next().getValue();
+		}
+		return output;
+	}
+	
 	public void printMap(Map<Double, Person> map) {
 		System.out.println("--------------");
 		for (Entry<Double, Person> entry : map.entrySet()) {
