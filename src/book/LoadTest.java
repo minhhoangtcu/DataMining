@@ -10,13 +10,13 @@ public class LoadTest {
 	
 	@Test
 	public void userLoadTest() {
-		load.loadUsers();
+		load.initUsers();
 	}
 	
 	@Test
 	public void ratingLoadTest() {
-		load.loadUsers();
-		load.loadRating();
+		load.initUsers();
+		load.initRating();
 	}
 
 }

@@ -17,11 +17,11 @@ public class LoadFile {
 	
 	public static void main(String[] args) {
 		LoadFile load = new LoadFile();
-		load.loadUsers();
-		load.loadRating();
+		load.initUsers();
+		load.initRating();
 	}
 	
-	public void loadUsers() {
+	public void initUsers() {
 		BufferedReader reader = null;
 		String line = null;
 		long startTime = System.currentTimeMillis();
@@ -61,7 +61,7 @@ public class LoadFile {
 		}
 	}
 
-	public void loadRating() {
+	public void initRating() {
 		BufferedReader reader = null;
 		String line = null;
 		long startTime = System.currentTimeMillis();

@@ -1,16 +1,21 @@
 package pearsonCorrelationCoefficient;
 
 import static org.junit.Assert.*;
+
 import java.util.HashMap;
 import java.util.Map;
+
 import distance.Person;
+
 import org.junit.Test;
 
+import book.LoadFile;
 import data.Bands;
 
 public class PearsonCorrelationTest {
 	
 	PearsonCorrelation correlation = new PearsonCorrelation();
+	LoadFile load = new LoadFile();
 	Person claraP, robertP;
 
 	public void initPeople() {
@@ -29,6 +34,13 @@ public class PearsonCorrelationTest {
 		robert.put("The Strokes", 2.0);
 		robert.put("Weird AI", 1.0);
 		robertP = new Person("Robert", robert);
+	}
+	
+	@Test
+	public void getHigestK() {
+		load.initUsers();
+		load.initRating();
+		correlation.getHigestKCorrelations(1, load.getPeople(), 3);
 	}
 	
 	@Test
