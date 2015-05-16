@@ -16,6 +16,7 @@ public class MinkowskiDistance {
 		distance.run();
 	}
 	
+	/* Wrong idea. Wrong implementaion.
 	public void run() {
 		LoadFile load = new LoadFile();
 		load.loadUsers();
@@ -25,6 +26,7 @@ public class MinkowskiDistance {
 			System.out.println(person.getID());
 		}
 	}
+	*/
 
 	/*
 	 * Compute the distance between 2 people. The smaller the distance, they have more similarities.
@@ -54,6 +56,8 @@ public class MinkowskiDistance {
 		return sortedDistances.firstEntry().getValue();
 	}
 	
+	/* This piece of code is very wrong. Because we are not finding the closest k people according to distance. But, to correlation.
+	 * However, we can still find k nearest based on distance. But, I do not have time to implement this.
 	public Person[] findNearestK(int r, int k, int id, Map<Integer, Person> people) {
 		Map<Double, Person> distances = new HashMap<>();
 		Person person = people.get(id);
@@ -80,6 +84,7 @@ public class MinkowskiDistance {
 		people.put(id, person);
 		return output;
 	}
+	*/
 	
 	public void printMap(Map<Double, Person> map) {
 		System.out.println("--------------");
