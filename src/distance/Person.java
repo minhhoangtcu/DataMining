@@ -8,10 +8,16 @@ public class Person {
 	private String location;
 	private int age;
 	private Map<String, Double> rating;
+	private Map<String, Integer> ratingDiscrete;
 	
 	public Person(String name, Map<String, Double> rating) {
 		this.name = name;
 		this.rating = rating;
+	}
+	
+	public Person(String name, Map<String, Integer> ratingDiscrete) {
+		this.name = name;
+		this.ratingDiscrete = ratingDiscrete;
 	}
 	
 	public Person(int id, String location, int age) {
