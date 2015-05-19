@@ -13,7 +13,6 @@ public class MinkowskiDistance {
 	
 	public static void main(String[] args) {
 		MinkowskiDistance distance = new MinkowskiDistance();
-		distance.run();
 	}
 	
 	/* Wrong idea. Wrong implementaion.
