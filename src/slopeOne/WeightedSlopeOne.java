@@ -34,16 +34,38 @@ public class WeightedSlopeOne {
 		
 		Person[] people = {amy, ben, clara, daisy};
 		
+		Map<String, Double> minhRating = new HashMap<String, Double>();
+		minhRating.put("Taylor Swift", 5.0);
+		minhRating.put("PSY", 2.0);
+		Person minh = new Person("Minh", minhRating);
 		
 		WeightedSlopeOne slopeOne = new WeightedSlopeOne();
 		slopeOne.computeDeviation(people);
-		slopeOne.printDeviationsTable();
+		//slopeOne.printDeviationsTable();
+		System.out.println(slopeOne.predict(minh, "Whitney Houston"));
+	}
+	
+	/*
+	 * Predict how much would this person rate the provided item
+	 */
+	public double predict(Person person, String item) {
+		if (!deviations.containsKey(item))
+			throw new IllegalArgumentException("no such item in the database");
+		double numerator = 0;
+		int denominator = 0;
+		for (Entry<String, Double> itemPersonRated: person.getRating().entrySet()) {
+			double deviation = deviations.get(item).get(itemPersonRated.getKey());
+			double rate = itemPersonRated.getValue();
+			int matches = frequencies.get(item).get(itemPersonRated.getKey());
+			numerator += (deviation + rate)*matches;
+			denominator += matches;
+		}
+		return numerator/denominator;
 	}
 	
 	/*
 	 * This method create a map of deviations from an array of users with their ratings
 	 * @param an array of users
-	 * 
 	 */
 	public void computeDeviation(Person[] allUsers) {
 		deviations = new HashMap<String, HashMap<String,Double>>();
