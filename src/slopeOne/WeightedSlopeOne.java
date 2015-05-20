@@ -1,14 +1,15 @@
 package slopeOne;
 
-import java.util.Map.*;
 import java.util.*;
 import java.util.Map.Entry;
-
 import distance.Person;
+
 public class WeightedSlopeOne {
 	
-	Map<String, HashMap<String, Double>> deviations = new HashMap<String, HashMap<String,Double>>();
-	Map<String, HashMap<String, Integer>> frequencies = new HashMap<String, HashMap<String,Integer>>();
+	// The first key is the name of one product. The second key is the name of other product.
+	// This map gives the deviations of first product to second product
+	private Map<String, HashMap<String, Double>> deviations = new HashMap<String, HashMap<String,Double>>();
+	private Map<String, HashMap<String, Integer>> frequencies = new HashMap<String, HashMap<String,Integer>>();
 	
 	public static void main(String[] args) {
 		Map<String, Double> amyRating = new HashMap<String, Double>();
@@ -42,7 +43,29 @@ public class WeightedSlopeOne {
 		WeightedSlopeOne slopeOne = new WeightedSlopeOne();
 		slopeOne.computeDeviation(people);
 		//slopeOne.printDeviationsTable();
-		System.out.println(slopeOne.predict(minh, "Whitney Houston"));
+		//System.out.println(slopeOne.predict(minh, "Whitney Houston"));
+		slopeOne.recommend(minh);
+	}
+	
+	/*
+	 * Go through every items that the data base have, make a list of highest rated items.
+	 */
+	public void recommend(Person person) {
+		Set<String> productNames = getProductNamesWithNoDuplicates(person);
+		TreeMap<Double, String> scores = new TreeMap<Double, String>(); // Automatically sort in ascending order
+		for (String product: productNames) {
+			scores.put(predict(person, product), product);
+		}
+		System.out.println(scores.lastEntry().getKey() + " " + scores.lastEntry().getValue());
+	}
+	
+	public Set<String> getProductNamesWithNoDuplicates(Person person) {
+		Set<String> productNames = deviations.keySet();
+		Set<String> ratedProduct = person.getRating().keySet();
+		for (String ratedName: ratedProduct) {
+			if (productNames.contains(ratedName)) productNames.remove(ratedName);
+		}
+		return productNames;
 	}
 	
 	/*
