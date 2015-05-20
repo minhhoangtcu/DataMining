@@ -12,26 +12,26 @@ import distance.Person;
 public class LoadFile {
 	
 	private int mode = 1; // Default to read book
-	private static final String USERFILE = "D:\\Computer Science\\BX-Users.csv";
-	private static final String RATING = "D:\\Computer Science\\BX-Book-Ratings.csv";
+	private static final String USERFILE = "src\\MoviesData\\BX-Users.csv";
+	private static final String BOOKRATINGFILE = "src\\MoviesData\\BX-Book-Ratings.csv";
+	private static final String MOVIERATINGFILE = "src\\MoviesData\\ratings.csv";
 	private String userFileDir;
 	private String ratingFileDir;
 	Map<Integer, Person> people = new HashMap<Integer, Person>();
 	
 	public static void main(String[] args) {
-		LoadFile load = new LoadFile("book");
-		load.initUsers();
-		load.initRating();
+		LoadFile movie = new LoadFile("movie");
+		movie.initRating();
 	}
 	
 	public LoadFile(String mode) {
-		if (mode.equals("movies")) {
+		if (mode.equals("movie")) {
 			this.mode = 2;
-			
+			ratingFileDir = MOVIERATINGFILE;
 		}
 		else {
 			userFileDir = USERFILE;
-			ratingFileDir = RATING;
+			ratingFileDir = BOOKRATINGFILE;
 			this.mode = 1;
 		}
 	}
@@ -100,6 +100,7 @@ public class LoadFile {
 					double score = Double.parseDouble(fields[2]);
 					people.put(userID, new Person(userID));
 					people.get(userID).putRating(movieID, score);
+					System.out.printf("Added rating of id: %d for movieID: %d at %f \n", userID, movieID, score);
 				}
 			}
 		} catch (FileNotFoundException e) {

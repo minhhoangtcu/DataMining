@@ -39,7 +39,7 @@ public class Person {
 		this.name = null;
 		this.location = null;
 		this.age = -1;
-		bookRating = new HashMap<>();
+		movieRating = new HashMap<>();
 	}
 	
 	public void putRating(String productID, Double score) {
