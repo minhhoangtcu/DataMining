@@ -60,7 +60,16 @@ public class WeightedSlopeOne {
 		// Convert into an array
 		Collection<Person> peopleSet = load.getPeople().values();
 		Person[] people = peopleSet.toArray(new Person[peopleSet.size()]);
+		
+		// Make a person and recommend
+		Map<String, Double> minhRating = new HashMap<String, Double>();
+		minhRating.put("6", 5.0);
+		minhRating.put("50", 3.0);
+		minhRating.put("303", 4.0);
+		Person minh = new Person("Minh", minhRating);
 		slopeOne.computeDeviation(people);
+		//System.out.println(slopeOne.deviations.get("4970").get("6"));
+		slopeOne.recommend(minh);
 	}
 	
 	/*
@@ -93,11 +102,13 @@ public class WeightedSlopeOne {
 		double numerator = 0;
 		int denominator = 0;
 		for (Entry<String, Double> itemPersonRated: person.getRating().entrySet()) {
-			double deviation = deviations.get(item).get(itemPersonRated.getKey());
-			double rate = itemPersonRated.getValue();
-			int matches = frequencies.get(item).get(itemPersonRated.getKey());
-			numerator += (deviation + rate)*matches;
-			denominator += matches;
+			if (deviations.get(item).containsKey(itemPersonRated.getKey())) {
+				double deviation = deviations.get(item).get(itemPersonRated.getKey());
+				double rate = itemPersonRated.getValue();
+				int matches = frequencies.get(item).get(itemPersonRated.getKey());
+				numerator += (deviation + rate)*matches;
+				denominator += matches;
+			}
 		}
 		return numerator/denominator;
 	}
@@ -152,7 +163,9 @@ public class WeightedSlopeOne {
 				int frequency = frequencies.get(outterName).get(innerName);
 				double oldDeviation = deviations.get(outterName).get(innerName);
 				double newDeviation = oldDeviation/frequency;
-				deviations.get(outterName).put(innerName, newDeviation);
+				if (frequency != 0)
+					deviations.get(outterName).put(innerName, newDeviation);
+				else deviations.get(outterName).put(innerName, null);
 			}
 		}
 		System.out.println("Execution time to compute deviations (mili sec): " + (System.currentTimeMillis() - startTime));
