@@ -12,6 +12,9 @@ public class Person {
 	public Person(String name, Map<String, Double> rating) {
 		this.name = name;
 		this.rating = rating;
+		this.location = null;
+		this.age = -1;
+		this.id = -1;
 	}
 	
 	public Person(int id, String location, int age) {
@@ -26,11 +29,20 @@ public class Person {
 		this.id = id;
 		this.name = null;
 		this.location = location;
+		this.age = -1;
 		rating = new HashMap<>();
 	}
 	
-	public void putRating(String isbn, Double score) {
-		rating.put(isbn, score);
+	public Person(int id) {
+		this.id = id;
+		this.name = null;
+		this.location = null;
+		this.age = -1;
+		rating = new HashMap<>();
+	}
+	
+	public void putRating(String productID, Double score) {
+		rating.put(productID, score);
 	}
 	
 	public int getID() {
