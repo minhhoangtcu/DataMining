@@ -57,8 +57,8 @@ public class PearsonCorrelation {
 	
 	public double getSumOfXY(Person firstPerson, Person secondPerson) {
 		double output = 0.0;
-		Map<String, Double> firstRating = firstPerson.getBookRating(); 
-		Map<String, Double> secondRating = secondPerson.getBookRating();
+		Map<String, Double> firstRating = firstPerson.getRating(); 
+		Map<String, Double> secondRating = secondPerson.getRating();
 		for (String product: firstRating.keySet()) {
 			if (secondRating.containsKey(product)) {
 				output += firstRating.get(product) * secondRating.get(product);
@@ -79,8 +79,8 @@ public class PearsonCorrelation {
 
 	public double getSumOfFirst(Person firstPerson, Person secondPerson, int power) {
 		double sumOfX = 0.0;
-		Map<String, Double> firstRating = firstPerson.getBookRating(); 
-		Map<String, Double> secondRating = secondPerson.getBookRating();
+		Map<String, Double> firstRating = firstPerson.getRating(); 
+		Map<String, Double> secondRating = secondPerson.getRating();
 		for (String product: firstRating.keySet()) {
 			if (secondRating.containsKey(product)) {
 				sumOfX += Math.pow(firstRating.get(product), power);
@@ -91,8 +91,8 @@ public class PearsonCorrelation {
 	
 	public int getMatch(Person firstPerson, Person secondPerson) {
 		int matches = 0;
-		Map<String, Double> firstRating = firstPerson.getBookRating(); 
-		Map<String, Double> secondRating = secondPerson.getBookRating();
+		Map<String, Double> firstRating = firstPerson.getRating(); 
+		Map<String, Double> secondRating = secondPerson.getRating();
 		for (String product: firstRating.keySet()) {
 			if (secondRating.containsKey(product))
 				matches++;

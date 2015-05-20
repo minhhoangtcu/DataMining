@@ -98,9 +98,10 @@ public class LoadFile {
 					int userID = Integer.parseInt(fields[0]);
 					int movieID = Integer.parseInt(fields[1]);
 					double score = Double.parseDouble(fields[2]);
-					people.put(userID, new Person(userID));
+					if (!people.containsKey(userID))
+						people.put(userID, new Person(userID));
 					people.get(userID).putRating(movieID, score);
-					System.out.printf("Added rating of id: %d for movieID: %d at %f \n", userID, movieID, score);
+					//System.out.printf("Added rating of id: %d for movieID: %d at %f \n", userID, movieID, score);
 				}
 			}
 		} catch (FileNotFoundException e) {

@@ -2,6 +2,8 @@ package slopeOne;
 
 import java.util.*;
 import java.util.Map.Entry;
+
+import book.LoadFile;
 import distance.Person;
 
 public class WeightedSlopeOne {
@@ -12,6 +14,7 @@ public class WeightedSlopeOne {
 	private Map<String, HashMap<String, Integer>> frequencies = new HashMap<String, HashMap<String,Integer>>();
 	
 	public static void main(String[] args) {
+		/* SMALL DATA
 		Map<String, Double> amyRating = new HashMap<String, Double>();
 		amyRating.put("Taylor Swift", 4.0);
 		amyRating.put("PSY", 3.0);
@@ -41,10 +44,23 @@ public class WeightedSlopeOne {
 		Person minh = new Person("Minh", minhRating);
 		
 		WeightedSlopeOne slopeOne = new WeightedSlopeOne();
-		slopeOne.computeDeviation(people);
+		
+		
+		//slopeOne.computeDeviation(people);
 		//slopeOne.printDeviationsTable();
 		//System.out.println(slopeOne.predict(minh, "Whitney Houston"));
-		slopeOne.recommend(minh);
+		//slopeOne.recommend(minh);
+		*/
+		
+		//HUGE DATASET
+		WeightedSlopeOne slopeOne = new WeightedSlopeOne();
+		LoadFile load = new LoadFile("movie");
+		load.initRating();
+		
+		// Convert into an array
+		Collection<Person> peopleSet = load.getPeople().values();
+		Person[] people = peopleSet.toArray(new Person[peopleSet.size()]);
+		slopeOne.computeDeviation(people);
 	}
 	
 	/*
@@ -61,7 +77,7 @@ public class WeightedSlopeOne {
 	
 	public Set<String> getProductNamesWithNoDuplicates(Person person) {
 		Set<String> productNames = deviations.keySet();
-		Set<String> ratedProduct = person.getBookRating().keySet();
+		Set<String> ratedProduct = person.getRating().keySet();
 		for (String ratedName: ratedProduct) {
 			if (productNames.contains(ratedName)) productNames.remove(ratedName);
 		}
@@ -76,7 +92,7 @@ public class WeightedSlopeOne {
 			throw new IllegalArgumentException("no such item in the database");
 		double numerator = 0;
 		int denominator = 0;
-		for (Entry<String, Double> itemPersonRated: person.getBookRating().entrySet()) {
+		for (Entry<String, Double> itemPersonRated: person.getRating().entrySet()) {
 			double deviation = deviations.get(item).get(itemPersonRated.getKey());
 			double rate = itemPersonRated.getValue();
 			int matches = frequencies.get(item).get(itemPersonRated.getKey());
@@ -93,10 +109,11 @@ public class WeightedSlopeOne {
 	public void computeDeviation(Person[] allUsers) {
 		deviations = new HashMap<String, HashMap<String,Double>>();
 		frequencies = new HashMap<String, HashMap<String,Integer>>();
+		long startTime = System.currentTimeMillis();
 		
 		// Go through each user in the array and get his rating
 		for (Person userInArray: allUsers) {
-			Map<String, Double> rating = userInArray.getBookRating();
+			Map<String, Double> rating = userInArray.getRating();
 			// Go through each rating of that user. Create 
 			for (Entry<String, Double> firstEntry: rating.entrySet()) {
 				// init the deviations matrix with firstEntry's name
@@ -138,6 +155,7 @@ public class WeightedSlopeOne {
 				deviations.get(outterName).put(innerName, newDeviation);
 			}
 		}
+		System.out.println("Execution time to compute deviations (mili sec): " + (System.currentTimeMillis() - startTime));
 	}
 
 	public void printDeviationsTable() {

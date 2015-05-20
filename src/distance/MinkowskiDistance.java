@@ -42,7 +42,7 @@ public class MinkowskiDistance {
 	public Person findNearest(int r, Person person, List<Person> people) {
 		Map<Double, Person> distances = new HashMap<>();
 		for (Person personInList: people) {
-			double distance = computeMinkowski(r, person.getBookRating(), personInList.getBookRating());
+			double distance = computeMinkowski(r, person.getRating(), personInList.getRating());
 			distances.put(distance ,personInList);
 		}
 		TreeMap<Double, Person> sortedDistances = new TreeMap<>(distances);
