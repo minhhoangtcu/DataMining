@@ -61,7 +61,7 @@ public class WeightedSlopeOne {
 	
 	public Set<String> getProductNamesWithNoDuplicates(Person person) {
 		Set<String> productNames = deviations.keySet();
-		Set<String> ratedProduct = person.getRating().keySet();
+		Set<String> ratedProduct = person.getBookRating().keySet();
 		for (String ratedName: ratedProduct) {
 			if (productNames.contains(ratedName)) productNames.remove(ratedName);
 		}
@@ -76,7 +76,7 @@ public class WeightedSlopeOne {
 			throw new IllegalArgumentException("no such item in the database");
 		double numerator = 0;
 		int denominator = 0;
-		for (Entry<String, Double> itemPersonRated: person.getRating().entrySet()) {
+		for (Entry<String, Double> itemPersonRated: person.getBookRating().entrySet()) {
 			double deviation = deviations.get(item).get(itemPersonRated.getKey());
 			double rate = itemPersonRated.getValue();
 			int matches = frequencies.get(item).get(itemPersonRated.getKey());
@@ -96,7 +96,7 @@ public class WeightedSlopeOne {
 		
 		// Go through each user in the array and get his rating
 		for (Person userInArray: allUsers) {
-			Map<String, Double> rating = userInArray.getRating();
+			Map<String, Double> rating = userInArray.getBookRating();
 			// Go through each rating of that user. Create 
 			for (Entry<String, Double> firstEntry: rating.entrySet()) {
 				// init the deviations matrix with firstEntry's name

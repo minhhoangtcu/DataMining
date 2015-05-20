@@ -11,14 +11,29 @@ import distance.Person;
 
 public class LoadFile {
 	
-	String userFile = "D:\\Computer Science\\BX-Users.csv";
-	String ratingFile = "D:\\Computer Science\\BX-Book-Ratings.csv";
+	private int mode = 1; // Default to read book
+	private static final String USERFILE = "D:\\Computer Science\\BX-Users.csv";
+	private static final String RATING = "D:\\Computer Science\\BX-Book-Ratings.csv";
+	private String userFileDir;
+	private String ratingFileDir;
 	Map<Integer, Person> people = new HashMap<Integer, Person>();
 	
 	public static void main(String[] args) {
-		LoadFile load = new LoadFile();
+		LoadFile load = new LoadFile("book");
 		load.initUsers();
 		load.initRating();
+	}
+	
+	public LoadFile(String mode) {
+		if (mode.equals("movies")) {
+			this.mode = 2;
+			
+		}
+		else {
+			userFileDir = USERFILE;
+			ratingFileDir = RATING;
+			this.mode = 1;
+		}
 	}
 	
 	public void initUsers() {
@@ -27,7 +42,7 @@ public class LoadFile {
 		long startTime = System.currentTimeMillis();
 		
 		try {
-			reader = new BufferedReader(new FileReader(userFile));
+			reader = new BufferedReader(new FileReader(userFileDir));
 			reader.readLine(); // skip first line
 			while ((line = reader.readLine()) != null) {
 				String[] fields = line.split("\";\"");
@@ -67,15 +82,25 @@ public class LoadFile {
 		long startTime = System.currentTimeMillis();
 		
 		try {
-			reader = new BufferedReader(new FileReader(ratingFile));
+			reader = new BufferedReader(new FileReader(ratingFileDir));
 			reader.readLine(); // skip first line
 			while ((line = reader.readLine()) != null) {
-				String[] fields = line.split("\";\"");
-				int id = Integer.parseInt(stripPunctionMark(fields[0]));
-				String isbn = stripPunctionMark(fields[1]);
-				int score = Integer.parseInt(stripPunctionMark(fields[2]));
-				people.get(id).putRating(isbn, (double) score);
-				//System.out.printf("Added rating of id: %d for book isbn: %s at %d \n", id, isbn, score);
+				if (mode == 1) {
+					String[] fields = line.split("\";\"");
+					int id = Integer.parseInt(stripPunctionMark(fields[0]));
+					String isbn = stripPunctionMark(fields[1]);
+					int score = Integer.parseInt(stripPunctionMark(fields[2]));
+					people.get(id).putRating(isbn, (double) score);
+					//System.out.printf("Added rating of id: %d for book isbn: %s at %d \n", id, isbn, score);
+				}
+				else if (mode == 2) {
+					String[] fields = line.split(",");
+					int userID = Integer.parseInt(fields[0]);
+					int movieID = Integer.parseInt(fields[1]);
+					double score = Double.parseDouble(fields[2]);
+					people.put(userID, new Person(userID));
+					people.get(userID).putRating(movieID, score);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			System.err.println("Cannot find the provided rating file");

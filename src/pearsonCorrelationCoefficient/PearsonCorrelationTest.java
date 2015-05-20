@@ -15,7 +15,7 @@ import data.Bands;
 public class PearsonCorrelationTest {
 	
 	PearsonCorrelation correlation = new PearsonCorrelation();
-	LoadFile load = new LoadFile();
+	LoadFile load = new LoadFile("book");
 	Person claraP, robertP;
 
 	public void initPeople() {

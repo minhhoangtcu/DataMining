@@ -3,16 +3,11 @@ package distance;
 import java.util.*;
 import java.util.Map.Entry;
 
-import javax.swing.JTable.PrintMode;
-
-import book.LoadFile;
-
 public class MinkowskiDistance {
 	
 	
 	
 	public static void main(String[] args) {
-		MinkowskiDistance distance = new MinkowskiDistance();
 	}
 	
 	/* Wrong idea. Wrong implementaion.
@@ -47,7 +42,7 @@ public class MinkowskiDistance {
 	public Person findNearest(int r, Person person, List<Person> people) {
 		Map<Double, Person> distances = new HashMap<>();
 		for (Person personInList: people) {
-			double distance = computeMinkowski(r, person.getRating(), personInList.getRating());
+			double distance = computeMinkowski(r, person.getBookRating(), personInList.getBookRating());
 			distances.put(distance ,personInList);
 		}
 		TreeMap<Double, Person> sortedDistances = new TreeMap<>(distances);

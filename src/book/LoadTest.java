@@ -1,12 +1,10 @@
 package book;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 public class LoadTest {
 
-	LoadFile load = new LoadFile();
+	LoadFile load = new LoadFile("book");
 	
 	@Test
 	public void userLoadTest() {
