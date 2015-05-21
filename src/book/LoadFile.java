@@ -11,6 +11,7 @@ import distance.Person;
 
 public class LoadFile {
 	
+	// TODO add files into Git Hub
 	private int mode = 1; // Default to read book
 	private static final String USERFILE = "src\\MoviesData\\BX-Users.csv";
 	private static final String BOOKRATINGFILE = "src\\MoviesData\\BX-Book-Ratings.csv";

@@ -8,6 +8,7 @@ import distance.Person;
 
 public class WeightedSlopeOne {
 	
+	// TODO Use Weika to implement this.
 	// The first key is the name of one product. The second key is the name of other product.
 	// This map gives the deviations of first product to second product
 	private Map<String, HashMap<String, Double>> deviations = new HashMap<String, HashMap<String,Double>>();
