@@ -3,11 +3,50 @@
     <head>
         <meta charset="utf-8">
         <title>D3 Test</title>
-        <script type="text/javascript" src="d3/d3.v3.js"></script>
+        <script type="text/javascript" src="d3/d3.v3.min.js"></script>
+        <style type="text/css">
+            /* No style rules here yet */       
+        </style>
     </head>
     <body>
+
         <script type="text/javascript">
-            // Your beautiful D3 code will go here
+
+            //Initialize data and constant
+            var dataset = [5, 10, 15, 20, 25, 30];
+            var heighOfCanvas = 100;
+            var widthOfCanvas = 500;
+            var widthOfRect = widthOfCanvas/dataset.length;
+
+            //Create SVG element
+            var mainCanvas = d3.select("body")
+                               .append("svg");
+
+            mainCanvas.attr("width", widthOfCanvas)
+                      .attr("height", heighOfCanvas);
+
+            //Create all the rectangles
+            var allRect = mainCanvas.selectAll("rect")
+                                    .data(dataset)
+                                    .enter()
+                                    .append("rect");
+
+            allRect.attr("x", function(d, i) {
+                        return (i*widthOfRect);
+                   })
+                   .attr("y", function(d) {
+                        return heighOfCanvas-d;
+                   })
+                   .attr("width", widthOfRect)
+                   .attr("height", function(d) {
+                        return d;
+                   })
+                   .attr("fill", "gray")
+                   .attr("stroke", "white")
+                   .attr("stroke-width", 1);
+
+
+
         </script>
     </body>
 </html>     
