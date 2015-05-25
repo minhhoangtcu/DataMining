@@ -14,9 +14,11 @@
 
             //Initialize data and constant
             var dataset = [5, 10, 15, 20, 25, 30];
+            var maxValue = 30;
             var heighOfCanvas = 100;
             var widthOfCanvas = 500;
             var widthOfRect = widthOfCanvas/dataset.length;
+            var heightOfRect = d3.scale.linear().domain([0, maxValue]).range([0, heighOfCanvas]);
 
             //Create SVG element
             var mainCanvas = d3.select("body")
@@ -34,12 +36,12 @@
             allRect.attr("x", function(d, i) {
                         return (i*widthOfRect);
                    })
-                   .attr("y", function(d) {
-                        return heighOfCanvas-d;
+                   .attr("y", function(d) {                    
+                        return heighOfCanvas-heightOfRect(d);
                    })
                    .attr("width", widthOfRect)
                    .attr("height", function(d) {
-                        return d;
+                        return heightOfRect(d);
                    })
                    .attr("fill", "gray")
                    .attr("stroke", "white")
