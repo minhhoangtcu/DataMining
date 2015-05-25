@@ -3,10 +3,8 @@
 	<head>
         <meta charset="utf-8">
         <title>D3 Bar Plot Test</title>
-        <script type="text/javascript" src="d3/d3.v3.min.js"></script>
-        <style type="text/css">
-            /* No style rules here yet */       
-        </style>
+        <script type="text/javascript" src="d3/d3.v3.min.js"></script>       
+        <link rel="stylesheet" type="text/css" href="scatterStyle.css"></link>
     </head>
 	<body>
 
@@ -59,6 +57,24 @@
 					  })
 					  .attr("r", radiusOfCircle)
 					  .attr("fill", "red");
+
+			//Create axis
+			
+			var xAxis = d3.svg.axis().scale(xScaleOfCircle)
+									 .orient("bottom")
+									 .ticks(5);
+			var yAxis = d3.svg.axis().scale(yScaleOfCircle)
+									 .orient("left")
+									 .ticks(5);
+			
+			mainCanvas.append("g").attr("class", "axis")
+								  .attr("transform", "translate(0, " + (heighOfCanvas-padding) +")")
+								  .call(xAxis);
+			mainCanvas.append("g").attr("class", "axis")
+					  			  .attr("transform", "translate(" + padding + ",0)")
+								  .call(yAxis);									
+			
+
 		</script>
 	</body>
 </html>
