@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>D3 Test</title>
+        <title>D3 Bar Plot Test</title>
         <script type="text/javascript" src="d3/d3.v3.min.js"></script>
         <style type="text/css">
             /* No style rules here yet */       
@@ -14,7 +14,9 @@
 
             //Initialize data and constant
             var dataset = [5, 10, 15, 20, 25, 30];
-            var maxValue = 30;
+            var maxValue = d3.max(dataset, function(d) {
+                  return d;
+            });
             var heighOfCanvas = 100;
             var widthOfCanvas = 500;
             var widthOfRect = widthOfCanvas/dataset.length;
