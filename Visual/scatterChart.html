@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <meta charset="utf-8">
+        <title>D3 Bar Plot Test</title>
+        <script type="text/javascript" src="d3/d3.v3.min.js"></script>
+        <style type="text/css">
+            /* No style rules here yet */       
+        </style>
+    </head>
+	<body>
+
+		<script type="text/javascript">
+
+			//Initialize data and constant
+			var dataset = [
+				[10, 20],
+				[15, 20],
+				[0, 10],
+				[5, 14],
+				[1, 20],
+				[7, 8],
+				[17, 15],
+				[5, 4],
+				[18, 19],
+				[13, 4]
+			];
+
+			var maxYValue = d3.max(dataset, function(d) {
+					return d[1];
+			});
+			var maxXValue = d3.max(dataset, function(d) {
+					return d[0];
+			})
+			var heighOfCanvas = 200;
+			var widthOfCanvas = 500;
+			var padding = 20;
+			var radiusOfCircle = 5; //Should not be larger than padding
+			var xScaleOfCircle = d3.scale.linear().domain([0, maxXValue]).range([padding, widthOfCanvas-padding]);
+			var yScaleOfCircle = d3.scale.linear().domain([0, maxYValue]).range([heighOfCanvas-padding, padding]);
+
+
+			//Create the main SVG canvas
+			var mainCanvas = d3.select("body").append("svg");
+			mainCanvas.attr("width", widthOfCanvas)
+					  .attr("height", heighOfCanvas);
+
+			//Create all data points
+			var allCircles = mainCanvas.selectAll("circle")		
+									   .data(dataset)
+									   .enter()
+									   .append("circle");
+
+			allCircles.attr("cx", function(d) {
+							return xScaleOfCircle(d[0]);
+					  })
+					  .attr("cy", function(d) {
+					  		return yScaleOfCircle(d[1]);
+					  })
+					  .attr("r", radiusOfCircle)
+					  .attr("fill", "red");
+		</script>
+	</body>
+</html>
