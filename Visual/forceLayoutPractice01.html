@@ -21,6 +21,7 @@
 			var links = [
 				{source: 0, target: 1}
 			];
+			console.log(links[0].source);
 
 			//Initialize the main svg canvas/container
 			var mainCanvas = d3.select("body")
@@ -40,6 +41,11 @@
 				.data(links)
 				.enter().append("line")
 				.attr("class", "link");
+			console.log(allLinks);
+			console.log(allLinks[0]);
+			//after creating a force layout.
+			//similar to nodes array. Instead of objects containing positions for each circles,
+			// allLinks going to have objects containing infomation of each circles
 
 			var allNodes = mainCanvas.selectAll(".node")
 				.data(nodes)
@@ -55,11 +61,13 @@
 						return d.y;
 					});
 
-				// TODO understand how this work
-				allLinks.attr('x1', function(d) { return d.source.x; })
-        			.attr('y1', function(d) { return d.source.y; })
-       				.attr('x2', function(d) { return d.target.x; })
-       				.attr('y2', function(d) { return d.target.y; });
+				allLinks.attr('x1', function(d) {
+										console.log(d);
+										console.log(d.source);
+										return d.source.x; })
+        				.attr('y1', function(d) { return d.source.y; })
+       					.attr('x2', function(d) { return d.target.x; })
+       					.attr('y2', function(d) { return d.target.y; });
 			});
 
 			//Never forget to start the layout!
