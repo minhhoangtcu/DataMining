@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<<html>
+<html>
 	<head>
 		<meta charset='utf-8'>
-		<title>D3 Force Layout 01</title>
+		<title>Force Layout Example 1</title>
 		<script type="text/javascript" src="d3/d3.v3.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/forceLayoutPractice01Style.css">
 	</head>
 	<body>
-
 		<script type="text/javascript">
 
 			var width = 500;
@@ -33,8 +32,9 @@
 			var force = d3.layout.force()
 				.size([width, height])
 				.nodes(nodes)
-				.links(links)
-				.linkDistance(width/2);
+				.links(links);
+
+			force.linkDistance(width/2);
 
 			var allLinks = mainCanvas.selectAll(".link")
 				.data(links)
@@ -55,7 +55,7 @@
 						return d.y;
 					});
 
-				link.attr('x1', function(d) { return d.source.x; })
+				allLinks.attr('x1', function(d) { return d.source.x; })
         			.attr('y1', function(d) { return d.source.y; })
        				.attr('x2', function(d) { return d.target.x; })
        				.attr('y2', function(d) { return d.target.y; });
