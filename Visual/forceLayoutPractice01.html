@@ -3,15 +3,15 @@
 	<head>
 		<meta charset='utf-8'>
 		<title>D3 Force Layout 01</title>
-		<script src="d3/d3.v3.min.js"></script>
+		<script type="text/javascript" src="d3/d3.v3.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="css/forceLayoutPractice01Style.css">
 	</head>
 	<body>
 
-		<script>
+		<script type="text/javascript">
 
-			var width = 500,
-				height = 300;
+			var width = 500;
+			var height = 300;
 
 			//Initialize nodes and links
 			//Normally we do not declare the position for the nodes. The layout can determine the positions for the nodes. However, for basic understanding and practice, we set the position for the nodes.
@@ -41,7 +41,7 @@
 				.enter().append("line")
 				.attr("class", "link");
 
-			var allNodes = mainCanvas.selectAll(".nodes")
+			var allNodes = mainCanvas.selectAll(".node")
 				.data(nodes)
 				.enter().append("circle")
 				.attr("class", "node");
