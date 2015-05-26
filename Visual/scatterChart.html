@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <title>D3 Bar Plot Test</title>
         <script type="text/javascript" src="d3/d3.v3.min.js"></script>       
-        <link rel="stylesheet" type="text/css" href="scatterStyle.css"></link>
+        <link rel="stylesheet" type="text/css" href="css/scatterStyle.css">
     </head>
 	<body>
 
@@ -29,7 +29,7 @@
 			});
 			var maxXValue = d3.max(dataset, function(d) {
 					return d[0];
-			})
+			});
 			var heighOfCanvas = 200;
 			var widthOfCanvas = 500;
 			var padding = 20;
