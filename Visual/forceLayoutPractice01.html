@@ -12,6 +12,11 @@
 			var width = 500;
 			var height = 300;
 
+			var printType = function(type, arg) {
+				console.log("type of " + type);
+				console.log(arg);
+			}
+
 			//Initialize nodes and links
 			//Normally we do not declare the position for the nodes. The layout can determine the positions for the nodes. However, for basic understanding and practice, we set the position for the nodes.
 			var nodes = [
@@ -21,7 +26,7 @@
 			var links = [
 				{source: 0, target: 1}
 			];
-			console.log(links[0].source);
+			printType("links", links);
 
 			//Initialize the main svg canvas/container
 			var mainCanvas = d3.select("body")
@@ -41,8 +46,10 @@
 				.data(links)
 				.enter().append("line")
 				.attr("class", "link");
-			console.log(allLinks);
-			console.log(allLinks[0]);
+			printType("allLinks", allLinks);
+			printType("first element of allLinks", allLinks[0]);
+			printType("links", links);
+			printType("first element of links", links[0]);
 			//after creating a force layout.
 			//similar to nodes array. Instead of objects containing positions for each circles,
 			// allLinks going to have objects containing infomation of each circles
@@ -62,8 +69,8 @@
 					});
 
 				allLinks.attr('x1', function(d) {
-										console.log(d);
-										console.log(d.source);
+										printType("d", d);
+										printType("d.source", d.source);
 										return d.source.x; })
         				.attr('y1', function(d) { return d.source.y; })
        					.attr('x2', function(d) { return d.target.x; })
