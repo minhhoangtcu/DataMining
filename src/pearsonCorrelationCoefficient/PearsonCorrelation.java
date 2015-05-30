@@ -6,8 +6,6 @@ import java.util.TreeMap;
 import book.LoadFile;
 import distance.Person;
 
-// TODO fix the getCorrelations
-
 public class PearsonCorrelation {
 	
 	private static final int MINSAMPLESIZE = 3;
