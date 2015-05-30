@@ -13,10 +13,10 @@ public class LoadFile {
 	
 	// TODO add files into Git Hub
 	private int mode = 1; // Default to read book
-	//private static final String USERFILE = "data\\BX-UsersConverted.csv";
-	//private static final String BOOKRATINGFILE = "data\\BX-Book-RatingsConverted.csv";
-	private static final String USERFILE = "data\\BX-Users30Lines.csv";
-	private static final String BOOKRATINGFILE = "data\\BX-Book-Ratings30Lines.csv";
+	private static final String USERFILE = "data\\BX-UsersConverted.csv";
+	private static final String BOOKRATINGFILE = "data\\BX-Book-RatingsConverted.csv";
+	//private static final String USERFILE = "data\\BX-Users30Lines.csv";
+	//private static final String BOOKRATINGFILE = "data\\BX-Book-Ratings30Lines.csv";
 	//private static final String MOVIERATINGFILE = "src\\MoviesData\\smallest ratings.csv"; // 10 lines of data.
 	private static final String MOVIERATINGFILE = "src\\MoviesData\\smaller rating2.csv"; // 10000 lines of data.
 	//private static final String MOVIERATINGFILE = "src\\MoviesData\\smaller ratings.csv"; // 50000 lines of data.
@@ -69,10 +69,13 @@ public class LoadFile {
 				//System.out.printf("Added %d at: %s age: %d \n", id, location, age);
 			}
 		} catch (NumberFormatException e) {
+			e.printStackTrace();
 			System.err.println("Invalid input. Cannot convert to number");
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 			System.err.println("Cannot find the provided user file");
 		} catch (IOException e) {
+			e.printStackTrace();
 			System.err.println("Cannot read from the file");
 		}
 		finally {

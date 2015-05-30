@@ -2,11 +2,21 @@ package pearsonCorrelationCoefficient;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+
+import book.LoadFile;
 import distance.Person;
 
 // TODO fix the getCorrelations
 
 public class PearsonCorrelation {
+	
+	public static void main(String[] args) {
+		LoadFile load = new LoadFile("book");
+		PearsonCorrelation correlation = new PearsonCorrelation();
+		load.initUsers();
+		load.initRating();
+		correlation.getHigestKCorrelations(1, load.getPeople(), 3);
+	}
 	
 	/*
 	 * Compute the correlation of the person with the given ID between all the people.

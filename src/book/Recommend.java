@@ -5,7 +5,7 @@ import distance.*;
 public class Recommend {
 
 	LoadFile loadFile;
-	PearsonCorrelation correlation = new PearsonCorrelation();
+	PearsonCorrelation correlation;
 	final static int distanceMode = 1; // 1 for Manhattan and 2 for Eucliean
 	
 	public static void main(String[] args) {
@@ -16,6 +16,8 @@ public class Recommend {
 		loadFile = new LoadFile("book");
 		loadFile.initUsers();
 		loadFile.initRating();
+		correlation = new PearsonCorrelation();
+		correlation.getHigestKCorrelations(id, loadFile.people, 3)
 	}
 	
 	
