@@ -13,8 +13,8 @@ public class LoadFile {
 	
 	// TODO add files into Git Hub
 	private int mode = 1; // Default to read book
-	private static final String USERFILE = "src\\MoviesData\\BX-Users.csv";
-	private static final String BOOKRATINGFILE = "src\\MoviesData\\BX-Book-Ratings.csv";
+	private static final String USERFILE = "data\\BX-Users.csv";
+	private static final String BOOKRATINGFILE = "data\\BX-Book-Ratings.csv";
 	//private static final String MOVIERATINGFILE = "src\\MoviesData\\smallest ratings.csv"; // 10 lines of data.
 	private static final String MOVIERATINGFILE = "src\\MoviesData\\smaller rating2.csv"; // 10000 lines of data.
 	//private static final String MOVIERATINGFILE = "src\\MoviesData\\smaller ratings.csv"; // 50000 lines of data.

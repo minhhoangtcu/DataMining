@@ -70,6 +70,6 @@ public class Person {
 	}
 	
 	public String toString() {
-		return name;
+		return "Name: " + name + " with ID: "+ id;
 	}
 }
