@@ -15,7 +15,7 @@ public class WeightedSlopeOne {
 	private Map<String, HashMap<String, Integer>> frequencies = new HashMap<String, HashMap<String,Integer>>();
 	
 	public static void main(String[] args) {
-		/* SMALL DATA
+		/*// SMALL DATA
 		Map<String, Double> amyRating = new HashMap<String, Double>();
 		amyRating.put("Taylor Swift", 4.0);
 		amyRating.put("PSY", 3.0);
@@ -47,10 +47,10 @@ public class WeightedSlopeOne {
 		WeightedSlopeOne slopeOne = new WeightedSlopeOne();
 		
 		
-		//slopeOne.computeDeviation(people);
+		slopeOne.computeDeviation(people);
 		//slopeOne.printDeviationsTable();
-		//System.out.println(slopeOne.predict(minh, "Whitney Houston"));
-		//slopeOne.recommend(minh);
+		System.out.println(slopeOne.predict(minh, "Whitney Houston"));
+		slopeOne.recommend(minh);
 		*/
 		
 		//HUGE DATASET
@@ -63,14 +63,9 @@ public class WeightedSlopeOne {
 		Person[] people = peopleSet.toArray(new Person[peopleSet.size()]);
 		
 		// Make a person and recommend
-		Map<String, Double> minhRating = new HashMap<String, Double>();
-		minhRating.put("6", 5.0);
-		minhRating.put("50", 3.0);
-		minhRating.put("303", 4.0);
-		Person minh = new Person("Minh", minhRating);
+		Person firstPerson = load.getPeople().get(1);
 		slopeOne.computeDeviation(people);
-		//System.out.println(slopeOne.deviations.get("4970").get("6"));
-		slopeOne.recommend(minh);
+		slopeOne.recommend(firstPerson);
 	}
 	
 	/*
@@ -78,11 +73,13 @@ public class WeightedSlopeOne {
 	 */
 	public void recommend(Person person) {
 		Set<String> productNames = getProductNamesWithNoDuplicates(person);
-		TreeMap<Double, String> scores = new TreeMap<Double, String>(); // Automatically sort in ascending order
+		TreeMap<Double, String> scores = new TreeMap<Double, String>(Collections.reverseOrder()); // Automatically sort in ascending order
 		for (String product: productNames) {
 			scores.put(predict(person, product), product);
 		}
-		System.out.println(scores.lastEntry().getKey() + " " + scores.lastEntry().getValue());
+		for (Entry<Double, String> entry: scores.entrySet()) {
+			System.out.printf("Recommended %s at %f %n", entry.getValue(), entry.getKey());
+		}
 	}
 	
 	public Set<String> getProductNamesWithNoDuplicates(Person person) {
