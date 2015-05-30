@@ -17,10 +17,6 @@ public class Recommend {
 		loadFile.initUsers();
 		loadFile.initRating();
 		correlation = new PearsonCorrelation();
-		correlation.getHigestKCorrelations(id, loadFile.people, 3)
+		correlation.getHigestKCorrelations(id, loadFile.people, 3);
 	}
-	
-	
-	
-	
 }
