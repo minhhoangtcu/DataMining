@@ -20,6 +20,14 @@ public class PearsonCorrelation {
 		correlation.getHigestKCorrelations(8, load.getPeople(), 3);
 	}
 	
+	public static void main(String[] args) {
+		LoadFile load = new LoadFile("book");
+		PearsonCorrelation correlation = new PearsonCorrelation();
+		load.initUsers();
+		load.initRating();
+		correlation.getHigestKCorrelations(1, load.getPeople(), 3);
+	}
+	
 	/*
 	 * Compute the correlation of the person with the given ID between all the people.
 	 * @param the id of the person that we want to find correlation

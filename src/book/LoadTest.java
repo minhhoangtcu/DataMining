@@ -2,6 +2,8 @@ package book;
 
 import org.junit.Test;
 
+import distance.Person;
+
 public class LoadTest {
 
 	LoadFile book = new LoadFile("book");
@@ -10,12 +12,18 @@ public class LoadTest {
 		book.initUsers();
 	}
 	
+	@Test
 	public void ratingLoadTest() {
 		book.initUsers();
 		book.initRating();
+		int counter = 0;
+		for (Person person: book.people.values()) {
+			if (counter >= 30) break;
+			person.display();
+			counter++;
+		}
 	}
 
-	@Test
 	public void movieLoadTest() {
 		LoadFile movie = new LoadFile("movie");
 		movie.initRating();
