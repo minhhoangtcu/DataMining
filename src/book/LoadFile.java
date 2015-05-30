@@ -13,8 +13,10 @@ public class LoadFile {
 	
 	// TODO add files into Git Hub
 	private int mode = 1; // Default to read book
-	private static final String USERFILE = "src\\MoviesData\\BX-Users.csv";
-	private static final String BOOKRATINGFILE = "src\\MoviesData\\BX-Book-Ratings.csv";
+	//private static final String USERFILE = "data\\BX-UsersConverted.csv";
+	//private static final String BOOKRATINGFILE = "data\\BX-Book-RatingsConverted.csv";
+	private static final String USERFILE = "data\\BX-Users30Lines.csv";
+	private static final String BOOKRATINGFILE = "data\\BX-Book-Ratings30Lines.csv";
 	//private static final String MOVIERATINGFILE = "src\\MoviesData\\smallest ratings.csv"; // 10 lines of data.
 	private static final String MOVIERATINGFILE = "src\\MoviesData\\smaller rating2.csv"; // 10000 lines of data.
 	//private static final String MOVIERATINGFILE = "src\\MoviesData\\smaller ratings.csv"; // 50000 lines of data.
@@ -23,8 +25,15 @@ public class LoadFile {
 	Map<Integer, Person> people = new HashMap<Integer, Person>();
 	
 	public static void main(String[] args) {
-		LoadFile movie = new LoadFile("movie");
-		movie.initRating();
+		LoadFile book = new LoadFile("book");
+		book.initUsers();
+		book.initRating();
+		int counter = 0;
+		for (Person person: book.people.values()) {
+			if (counter >= 30) break;
+			person.display();
+			counter++;
+		}
 	}
 	
 	public LoadFile(String mode) {
@@ -32,7 +41,7 @@ public class LoadFile {
 			this.mode = 2;
 			ratingFileDir = MOVIERATINGFILE;
 		}
-		else {
+		else if (mode.equals("book")) {
 			userFileDir = USERFILE;
 			ratingFileDir = BOOKRATINGFILE;
 			this.mode = 1;
@@ -48,19 +57,16 @@ public class LoadFile {
 			reader = new BufferedReader(new FileReader(userFileDir));
 			reader.readLine(); // skip first line
 			while ((line = reader.readLine()) != null) {
-				String[] fields = line.split("\";\"");
-				int id = Integer.parseInt(stripPunctionMark(fields[0]));
+				String[] fields = line.split(";");
+				int id = Integer.parseInt(fields[0]);
 				String location = fields[1];
-				if (location.contains("\";")) { // When there is no age. The data is represented as "location";NULL. We cannot split for ";" here. So check for "; and split.
-					location = location.split("\";")[0];
-					//System.out.printf("Added %d at %s\n", id, location);
-					people.put(id, new Person(id, location));
-				}
-				else {
-					int age = Integer.parseInt(stripPunctionMark(fields[2]));
-					people.put(id, new Person(id, location, age));
-					//System.out.printf("Added %d at: %s age: %d \n", id, location, age);
-				}
+				int age;
+				if (fields[2].equals("NULL"))
+					age = -1;
+				else 
+					age = Integer.parseInt(fields[2]);
+				people.put(id, new Person(id, location, age));
+				//System.out.printf("Added %d at: %s age: %d \n", id, location, age);
 			}
 		} catch (NumberFormatException e) {
 			System.err.println("Invalid input. Cannot convert to number");
@@ -89,11 +95,11 @@ public class LoadFile {
 			reader.readLine(); // skip first line
 			while ((line = reader.readLine()) != null) {
 				if (mode == 1) {
-					String[] fields = line.split("\";\"");
-					int id = Integer.parseInt(stripPunctionMark(fields[0]));
-					String isbn = stripPunctionMark(fields[1]);
-					int score = Integer.parseInt(stripPunctionMark(fields[2]));
-					people.get(id).putRating(isbn, (double) score);
+					String[] fields = line.split(";");
+					int id = Integer.parseInt(fields[0]);
+					String isbn = fields[1];
+					double score = Double.parseDouble(fields[2]);
+					people.get(id).putRating(isbn, score);
 					//System.out.printf("Added rating of id: %d for book isbn: %s at %d \n", id, isbn, score);
 				}
 				else if (mode == 2) {

@@ -1,6 +1,7 @@
 package distance;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Person {
 	private String name;
@@ -39,6 +40,19 @@ public class Person {
 		this.location = null;
 		this.age = -1;
 		rating = new HashMap<>();
+	}
+	
+	public void display() {
+		System.out.println("***************************************************");
+		System.out.printf("ID: %d | Location: %s | Age: %d%n", id, location, age);
+		if (rating.isEmpty()) {
+			System.out.println("No Rating");
+		}
+		else {
+			for (Entry<String, Double> entry: rating.entrySet()) {
+				System.out.printf("Rated isbn %s: %.0f%n", entry.getKey(), entry.getValue());
+			}
+		}
 	}
 	
 	public void putRating(String productID, Double score) {
