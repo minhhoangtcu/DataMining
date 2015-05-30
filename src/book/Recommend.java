@@ -1,5 +1,5 @@
 package book;
-import pearsonCorrelationCoefficient.PearsonCorrelation;
+import book.pearsonCorrelationCoefficient.PearsonCorrelation;
 import distance.*;
 
 public class Recommend {

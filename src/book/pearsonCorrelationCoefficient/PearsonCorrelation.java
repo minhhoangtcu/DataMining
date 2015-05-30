@@ -1,4 +1,4 @@
-package pearsonCorrelationCoefficient;
+package book.pearsonCorrelationCoefficient;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;

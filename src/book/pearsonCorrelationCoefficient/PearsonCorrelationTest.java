@@ -1,4 +1,4 @@
-package pearsonCorrelationCoefficient;
+package book.pearsonCorrelationCoefficient;
 
 import static org.junit.Assert.*;
 
