@@ -1,4 +1,5 @@
 package book.pearsonCorrelationCoefficient;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
@@ -27,24 +28,22 @@ public class PearsonCorrelation {
 	public TreeMap<Double, Person> getHigestKCorrelations(int id, Map<Integer, Person> people, int k) {
 		Person person = people.get(id);
 		people.remove(id);
-		TreeMap<Double, Person> correlations = new TreeMap<Double, Person>(); 
+		TreeMap<Double, Person> correlations = new TreeMap<Double, Person>(Collections.reverseOrder()); 
 		for (Person personInMap: people.values()) {
 			double correlation = computeCorrelation(person, personInMap);
 			correlations.put(correlation, personInMap);
 		}
-		return getHigestKInAMap(correlations, k);
-	}
-	
-	private TreeMap<Double, Person> getHigestKInAMap(TreeMap<Double, Person> source, int k) {
-		int count = 0;
-		TreeMap<Double, Person> output = new TreeMap<Double, Person>();
-		for(Entry<Double, Person> entry: source.entrySet()) {
-			if (count >= k) break;
+		
+		int counter = 0;
+		TreeMap<Double, Person> output = new TreeMap<Double, Person>(Collections.reverseOrder());
+		for (Entry<Double, Person> entry: output.entrySet()) {
+			if (counter >= k) break;
 			output.put(entry.getKey(), entry.getValue());
-			count++;
+			counter++;
 		}
 		return output;
 	}
+	
 
 	public double computeCorrelation(Person firstPerson, Person secondPerson) {
 		int matches = getMatch(firstPerson, secondPerson);

@@ -18,6 +18,14 @@ public class Person {
 		this.id = -1;
 	}
 	
+	public Person(String name) {
+		this.name = name;
+		this.rating = new HashMap<>();
+		this.location = null;
+		this.age = -1;
+		this.id = -1;
+	}
+	
 	public Person(int id, String location, int age) {
 		this.id = id;
 		this.name = null;
