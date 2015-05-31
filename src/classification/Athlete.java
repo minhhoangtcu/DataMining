@@ -14,6 +14,13 @@ public class Athlete {
 		this.weight = weight;
 	}
 	
+	public int[] toVector() {
+		int[] vector = new int[2];
+		vector[0] = height;
+		vector[1] = weight;
+		return vector;
+	}
+	
 	public String toString() {
 		return (name + "\t" + classification + "\t" + height + "\t" + weight);
 	}
