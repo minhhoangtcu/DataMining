@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class AthletesLoad {
 	
 	static final String TRAINING = "data\\athletesTrainingSet.txt";
-	static final String TEST = "data\\athletesTestSet.txt.txt";
+	static final String TEST = "data\\athletesTestSet.txt";
 	
 	/* UNCOMMENT FOR TEST
 	public static void main(String[] args) {
