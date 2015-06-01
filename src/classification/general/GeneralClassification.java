@@ -8,9 +8,13 @@ import classification.Normalization;
 public class GeneralClassification {
 	
 	public static void main(String[] args) {
+		
+	}
+	
+	public double computeCorrectness(int mode, String trainingDir, String testingDir) {
 		GeneralClassification classification = new GeneralClassification();
-		GeneralLoad loadTest = new GeneralLoad(GeneralLoad.MPGTEST);
-		GeneralLoad loadTraining = new GeneralLoad(GeneralLoad.MPGTRAINING);
+		GeneralLoad loadTest = new GeneralLoad(testingDir);
+		GeneralLoad loadTraining = new GeneralLoad(trainingDir);
 		Item[] testItems = loadTest.getItems();
 		double[] medians = loadTraining.getMedian();
 		double[] absoluteSD = loadTraining.getAbsoluteSD();
@@ -19,36 +23,37 @@ public class GeneralClassification {
 		
 		int corrects = 0;
 		int numberOfTrials = testItems.length;
-		for (Item itemInArray: testItems) {
-			itemInArray = classification.normalizeItem(itemInArray, medians, absoluteSD);
-			String result = classification.classifyNormalize(itemInArray, loadTraining); // Using training to classify items
-			String expected = itemInArray.getClassification();
-			if (result.equals(expected)) corrects++;
+		String nameOfMode = null;
+		if (mode == 0) {
+			nameOfMode = "NO normalization";
+			for (Item itemInArray: testItems) {
+				String result = classification.classify(itemInArray, loadTraining); // Using training to classify items
+				String expected = itemInArray.getClassification();
+				if (result.equals(expected)) corrects++;
+			}
+		}
+		else if (mode == 1) {
+			nameOfMode = "normalization with median and absolute SD";
+			for (Item itemInArray: testItems) {
+				itemInArray = classification.normalizeItem(itemInArray, medians, absoluteSD);
+				String result = classification.classifyNormalize(itemInArray, loadTraining); // Using training to classify items
+				String expected = itemInArray.getClassification();
+				if (result.equals(expected)) corrects++;
+			}
+		}
+		else if (mode == 2) {
+			nameOfMode = "normalization with min and max";
+			for (Item itemInArray: testItems) {
+				itemInArray = classification.normalizeItem2(itemInArray, min, max);
+				String result = classification.classifyNormalize2(itemInArray, loadTraining); // Using training to classify items
+				String expected = itemInArray.getClassification();
+				if (result.equals(expected)) corrects++;
+			}
 		}
 		double correctness = 100*corrects/numberOfTrials;
-		System.out.printf("Using normalization technique, the classification is %.2f correct%n", correctness);
-		
-		corrects = 0;
-		for (Item itemInArray: testItems) {
-			String result = classification.classify(itemInArray, loadTraining); // Using training to classify items
-			String expected = itemInArray.getClassification();
-			if (result.equals(expected)) corrects++;
-		}
-		correctness = 100*corrects/numberOfTrials;
-		System.out.printf("Using NO normalizing, the classification is %.2f correct%n", correctness);
-		
-		corrects = 0;
-		for (Item itemInArray: testItems) {
-			itemInArray = classification.normalizeItem2(itemInArray, min, max);
-			String result = classification.classifyNormalize2(itemInArray, loadTraining); // Using training to classify items
-			String expected = itemInArray.getClassification();
-			if (result.equals(expected)) corrects++;
-		}
-		correctness = 100*corrects/numberOfTrials;
-		System.out.printf("Using Normalizing with min and max, the classification is %.2f correct%n", correctness);
+		System.out.printf("Using %s, the classification is %.2f correct%n", nameOfMode, correctness);
+		return correctness;
 	}
-	
-	
 	
 	public String classifyNormalize(Item itemToClassify, GeneralLoad load) {
 		Item closest = findNearestMatchNormalize(itemToClassify, load);
