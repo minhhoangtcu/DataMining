@@ -20,27 +20,32 @@ public class TenFoldClassification {
 		TenFoldClassification classification = new TenFoldClassification();
 		String folderDir = "data";
 		String prefixForBuckets = "mpgBucket";
-		String fileName = "mpgTrainingSet.txt";
+		String fileDir = GeneralLoad.IRISTRAINING;
 		
 		//String fileDir = "data\\mpgTrainingSet.txt";
 		//int numberOfFiles = 10;
 		//classification.splitToNFiles(fileDir, prefixForBuckets, numberOfFiles);
 		//classification.combineFiles(folderDir, prefixForBuckets, 0, 1, 0);
 		
-		classification.executeTenFondClassifition(folderDir, fileName, prefixForBuckets);
+		classification.executeTenFondClassifition(folderDir, fileDir, prefixForBuckets, 0);
 	}
-	
-	public void executeTenFondClassifition(String folderDir, String fileName, String prefixForBuckets) {
+	/*
+	 * Split a dataset into n files. Go through each file, make it a testing file and use all other files as training file.
+	 * @param directory to the folder of the files.
+	 * @param directory to the file that will be splitted
+	 * @param prefix for the splitted files
+	 * @param the type of normalization. 0 for no normalize. 1 for normalize using median and absolute SD. 2 for normalize using min and max 
+	 */
+	public void executeTenFondClassifition(String folderDir, String fileDir, String prefixForBuckets, int mode) {
 		GeneralClassification classification = new GeneralClassification();
 		final int NUMBEROFSPLIT = 10; // Since this is ten-fold, we split files into 10 bits.
-		String fileDir = folderDir + "\\" + fileName;
 		splitToNFiles(fileDir, prefixForBuckets, NUMBEROFSPLIT);
 		double[] correctness = new double[NUMBEROFSPLIT];
 		
 		for (int i = 0; i < NUMBEROFSPLIT; i++) {
 			String trainingDir = combineFiles(folderDir, prefixForBuckets, 0, NUMBEROFSPLIT-1, i);
 			String testingDir = folderDir + "\\" + prefixForBuckets + i;
-			correctness[i] = classification.computeCorrectness(1, trainingDir, testingDir);
+			correctness[i] = classification.computeCorrectness(mode, trainingDir, testingDir);
 		}
 		System.out.println(StatUtils.mean(correctness));
 	}
