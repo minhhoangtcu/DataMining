@@ -8,11 +8,13 @@ import classification.Normalization;
 public class GeneralClassification {
 	
 	public static void main(String[] args) {
-		
+		GeneralClassification classification = new GeneralClassification();
+		double correctMPG0 = classification.computeCorrectness(0, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		double correctMPG1 = classification.computeCorrectness(1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		double correctMPG2 = classification.computeCorrectness(2, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
 	}
 	
 	public double computeCorrectness(int mode, String trainingDir, String testingDir) {
-		GeneralClassification classification = new GeneralClassification();
 		GeneralLoad loadTest = new GeneralLoad(testingDir);
 		GeneralLoad loadTraining = new GeneralLoad(trainingDir);
 		Item[] testItems = loadTest.getItems();
@@ -27,7 +29,7 @@ public class GeneralClassification {
 		if (mode == 0) {
 			nameOfMode = "NO normalization";
 			for (Item itemInArray: testItems) {
-				String result = classification.classify(itemInArray, loadTraining); // Using training to classify items
+				String result = classify(itemInArray, loadTraining); // Using training to classify items
 				String expected = itemInArray.getClassification();
 				if (result.equals(expected)) corrects++;
 			}
@@ -35,8 +37,8 @@ public class GeneralClassification {
 		else if (mode == 1) {
 			nameOfMode = "normalization with median and absolute SD";
 			for (Item itemInArray: testItems) {
-				itemInArray = classification.normalizeItem(itemInArray, medians, absoluteSD);
-				String result = classification.classifyNormalize(itemInArray, loadTraining); // Using training to classify items
+				itemInArray = normalizeItem(itemInArray, medians, absoluteSD);
+				String result = classifyNormalize(itemInArray, loadTraining); // Using training to classify items
 				String expected = itemInArray.getClassification();
 				if (result.equals(expected)) corrects++;
 			}
@@ -44,8 +46,8 @@ public class GeneralClassification {
 		else if (mode == 2) {
 			nameOfMode = "normalization with min and max";
 			for (Item itemInArray: testItems) {
-				itemInArray = classification.normalizeItem2(itemInArray, min, max);
-				String result = classification.classifyNormalize2(itemInArray, loadTraining); // Using training to classify items
+				itemInArray = normalizeItem2(itemInArray, min, max);
+				String result = classifyNormalize2(itemInArray, loadTraining); // Using training to classify items
 				String expected = itemInArray.getClassification();
 				if (result.equals(expected)) corrects++;
 			}

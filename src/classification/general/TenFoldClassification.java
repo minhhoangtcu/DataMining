@@ -10,17 +10,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.commons.math3.stat.StatUtils;
 
 public class TenFoldClassification {
 	
 	public static void main(String[] args) {
 		TenFoldClassification classification = new TenFoldClassification();
-		//String fileDir = "data\\mpgTrainingSet.txt";
+		String folderDir = "data";
 		String prefixForBuckets = "mpgBucket";
+		String fileName = "mpgTrainingSet.txt";
+		
+		//String fileDir = "data\\mpgTrainingSet.txt";
 		//int numberOfFiles = 10;
 		//classification.splitToNFiles(fileDir, prefixForBuckets, numberOfFiles);
-		String folderDir = "data";
-		classification.combineFiles(folderDir, prefixForBuckets, 0, 1);
+		//classification.combineFiles(folderDir, prefixForBuckets, 0, 1, 0);
+		
+		classification.executeTenFondClassifition(folderDir, fileName, prefixForBuckets);
+	}
+	
+	public void executeTenFondClassifition(String folderDir, String fileName, String prefixForBuckets) {
+		GeneralClassification classification = new GeneralClassification();
+		final int NUMBEROFSPLIT = 10; // Since this is ten-fold, we split files into 10 bits.
+		String fileDir = folderDir + "\\" + fileName;
+		splitToNFiles(fileDir, prefixForBuckets, NUMBEROFSPLIT);
+		double[] correctness = new double[NUMBEROFSPLIT];
+		
+		for (int i = 0; i < NUMBEROFSPLIT; i++) {
+			String trainingDir = combineFiles(folderDir, prefixForBuckets, 0, NUMBEROFSPLIT-1, i);
+			String testingDir = folderDir + "\\" + prefixForBuckets + i;
+			correctness[i] = classification.computeCorrectness(1, trainingDir, testingDir);
+		}
+		System.out.println(StatUtils.mean(correctness));
 	}
 	
 	/*
@@ -29,10 +51,11 @@ public class TenFoldClassification {
 	 * @param the prefix of the files
 	 * @param the index of the starting file inclusive
 	 * @param the index of the ending file inclusive
+	 * @param the index of the file that we will ignore in the range
 	 * @return the directory to the output file
 	 */
-	public String combineFiles(String folderDir, String prefixForBuckets, int startIndex, int endIndex) {
-		String name = prefixForBuckets + "Combined" + startIndex + endIndex;
+	public String combineFiles(String folderDir, String prefixForBuckets, int startIndex, int endIndex, int except) {
+		String name = prefixForBuckets + "Combined-" + startIndex + "-" + endIndex + "-" + except;
 		String fileDir = folderDir + "\\" + name;
 		BufferedWriter writer = null;
 		
@@ -41,8 +64,13 @@ public class TenFoldClassification {
 			String firstLine = null;
 			
 			for (int i = startIndex; i <= endIndex; i++) {
+				// Ignore the file
+				if (i == except) {
+					continue;
+				}
 				String smallFileDir = folderDir + "\\" + prefixForBuckets + i;
 				BufferedReader reader = new BufferedReader(new FileReader(smallFileDir));
+				
 				// Read and write and first line
 				if (firstLine == null) {
 					firstLine = reader.readLine();
@@ -54,6 +82,7 @@ public class TenFoldClassification {
 					reader.close();
 					throw new IOException();
 				}
+				
 				// Read the rest of the lines and write
 				String line = null;
 				while ((line = reader.readLine()) != null) {
@@ -89,7 +118,7 @@ public class TenFoldClassification {
 	 * @param prefix to split the file. For example, with prefixForBuckets = "auto". The output files will be "auto0", "auto1", "auto2"
 	 * @param the number of output files to split
 	 */
-	public void splitToNFiles(String fileDir, String prefixForBuckets, int numberOfFiles) {
+	public String[] splitToNFiles(String fileDir, String prefixForBuckets, int numberOfFiles) {
 		BufferedReader reader = null;
 		HashMap<String, ArrayList<String>> classToLines = new HashMap<String, ArrayList<String>>(); 
 		
@@ -147,13 +176,22 @@ public class TenFoldClassification {
 			}
 			
 			// Completion announcement
+			Set<String> allClassifications = classToLines.keySet();
 			System.out.println("Spliting completed. No error detected. Files are placed in folder data");
+			System.out.println("All classifications: ");
+			for (String classification: allClassifications) {
+				System.out.print(classification + " ");
+			}
+			return allClassifications.toArray(new String[allClassifications.size()]);
 			
 		} catch (FileNotFoundException e) {
 			System.err.println("Cannot find the provided file");
 			e.printStackTrace();
+			return null;
 		} catch (IOException e) {
 			System.err.println("File corrupted");
+			e.printStackTrace();
+			return null;
 		} finally {
 			try {
 				if (reader != null) reader.close();
