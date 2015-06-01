@@ -4,21 +4,30 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
+import classification.ModifiedNormalization;
 
 public class GeneralLoad {	
 	static final String MPGTRAINING = "data\\mpgTrainingSet.txt";
 	static final String MPGTEST = "data\\mpgTestSet.txt";
 	static final String IRISTRAINING = "data\\irisTrainingSet.data";
+	private Item[] items;
+	private double[][] values;
+	private double[] medians;
+	private double[] absoluteSD;
 	
 	//UNCOMMENT FOR TEST
 	public static void main(String[] args) {
 		GeneralLoad load = new GeneralLoad();
-		for (Item currentA: load.loadFile(IRISTRAINING)) {
-			System.out.println(currentA);
-		}
+		Item[] allItems = load.loadFile(GeneralLoad.MPGTEST);
+		double[][] allValues = load.setValues(allItems);
+		System.out.println("Medians: " + Arrays.toString(load.getMedian(allValues)));
+		System.out.println("Absolute SD: " + Arrays.toString(load.getAbsoluteSD(allValues)));
 	}
 
 	/*
@@ -34,21 +43,26 @@ public class GeneralLoad {
 		
 		try {
 			reader = new BufferedReader(new FileReader(fileDir));
+			
+			// Inspect the first line. We will see how many attributes there are to wrap the data into our items
 			String firstLine = reader.readLine();
 			String[] types = firstLine.split("\t");
 			
+			// Reader through the rest of the file and init items
 			String line = null;
 			while ((line = reader.readLine()) != null) {
 				String[] fields = line.split("\t");
-				
 				String classification = null;
 				ArrayList<Double> attributes = new ArrayList<Double>();
 				ArrayList<String> ignores = new ArrayList<String>();
+				
 				for (int i = 0; i < fields.length; i++) {
 					if (types[i].equals("class"))
 						classification = fields[i];
-					else if (types[i].equals("num"))
-						attributes.add(Double.parseDouble(fields[i]));
+					else if (types[i].equals("num")) {
+						double tempAttribute = Double.parseDouble(fields[i]); 
+						attributes.add(tempAttribute);
+					}
 					else if (types[i].equals("comment"))
 						ignores.add(fields[i]);
 				}
@@ -73,8 +87,56 @@ public class GeneralLoad {
 				e.printStackTrace();
 			}
 		}
-		return tempList.toArray(new Item[tempList.size()]);
+		items = tempList.toArray(new Item[tempList.size()]);
+		return items;
 	}
+	
+	public double[][] setValues(Item[] input) {
+		int numberOfAttributes = input[0].getAttributes().length; // Get the number of attributes by inspecting the first item in the array
+		int numberOfItems = input.length;
+		
+		// Put all the attributes of all items into an multidimensional array for computational purpose. 
+		values = new double[numberOfAttributes][numberOfItems];
+		for (int i = 0; i < numberOfItems; i++) {
+			for (int j = 0; j < numberOfAttributes; j++) {
+				values[j][i] = input[i].getAttributes()[j];
+			}
+		}
+		return values;
+	}
+	
+	public double[] getMedian(double[][] values) {
+		ModifiedNormalization normal = new ModifiedNormalization();
+		int numberOfAttributes = values.length;
+		medians = new double[numberOfAttributes]; 
+		for (int i = 0; i < numberOfAttributes; i++) {
+			medians[i] = normal.getMedian(values[i]);
+		}
+		return medians;
+	}
+	
+	public double[] getAbsoluteSD(double[][] values) {
+		ModifiedNormalization normal = new ModifiedNormalization();
+		int numberOfAttributes = values.length;
+		absoluteSD = new double[numberOfAttributes]; 
+		for (int i = 0; i < numberOfAttributes; i++) {
+			absoluteSD[i] = normal.getAbsoluteSD(values[i]);
+		}
+		return absoluteSD;
+	}
+	
+	public Item[] getItems() {
+		return items;
+	}
+	
+	public double[][] getValues() {
+		return values;
+	}
+	
+	public void printValues() {
+		System.out.println(Arrays.deepToString(values));
+	}
+	
 	
 	private double[] convertToDouble(ArrayList<Double> input) {
 		Double[] convertedArray = input.toArray(new Double[input.size()]);

@@ -6,6 +6,13 @@ import org.junit.Test;
 public class GeneralClassificationTest {
 
 	@Test
+	public void loadMPGTest() {
+		GeneralLoad load = new GeneralLoad();
+		Item[] allItems = load.loadFile(GeneralLoad.MPGTRAINING);
+		double[][] allValues = load.setValues(allItems);
+		//load.printValues();
+	}
+	
 	public void autoMPGTest() {
 		GeneralClassification classification = new GeneralClassification();
 		GeneralLoad load = new GeneralLoad();
@@ -23,7 +30,6 @@ public class GeneralClassificationTest {
 		System.out.printf("The classification is %.2f correct%n", correctness);
 	}
 	
-	@Test
 	public void itemEqualTest() {
 		String classificationName = "20";
 		double[] attributes = {8, 307.0, 130.0, 3504, 12.0};

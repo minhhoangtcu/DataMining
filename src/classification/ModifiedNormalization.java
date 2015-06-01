@@ -48,6 +48,8 @@ public class ModifiedNormalization {
 		return normalizedScores;
 	}
 	
+	public double getModifiedNormalization(double input, double median, double absoluteSD) {
+	
 	public double getAbsoluteSD(double[] input) {
 		double sum = 0;
 		double median = getMedian(input);
