@@ -34,4 +34,35 @@ public class ModifiedNormalization {
 		
 		return normalizedScores;
 	}
+	
+	public double[] getModifiedNormalization(double[] input) {
+		double median = getMedian(input);
+		double absoluteSD = getAbsoluteSD(input);
+		
+		double[] normalizedScores = new double[input.length];
+		for (int i = 0; i < input.length; i++) {
+			double normalized = (input[i] - median) / absoluteSD;
+			normalizedScores[i] = normalized;
+		}
+		
+		return normalizedScores;
+	}
+	
+	public double getAbsoluteSD(double[] input) {
+		double sum = 0;
+		double median = getMedian(input);
+		for (double value: input) {
+			sum += Math.abs(value - median);
+		}
+		double absoluteSD = sum / input.length;
+		return absoluteSD;
+	}
+	
+	public double getMedian(double[] input) {
+		DescriptiveStatistics stats = new DescriptiveStatistics();
+		for (double value: input) {
+			stats.addValue((double) value);
+		}
+		return stats.getPercentile(50);
+	}
 }

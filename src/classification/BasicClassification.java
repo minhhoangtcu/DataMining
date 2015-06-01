@@ -21,6 +21,8 @@ public class BasicClassification {
 		//System.out.printf("Using normalization, we classified %s(%s) as %s%n", testAthlete2.getName(), testAthlete2.getClassification(), classification.classify(testAthlete2, 2));
 		//System.out.println(classification.findNearestMatch(testAthlete2));
 		//System.out.println(classification.findNearestMatchNormalized(testAthlete2));
+		
+		
 	}
 	
 	public String classify(Athlete athlete, int mode) {
