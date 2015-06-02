@@ -47,7 +47,7 @@ public class TenFoldClassification {
 			String testingDir = folderDir + "\\" + prefixForBuckets + i;
 			correctness[i] = classification.computeCorrectness(mode, trainingDir, testingDir);
 		}
-		System.out.println(StatUtils.mean(correctness));
+		System.out.println("Mean correctness: " + StatUtils.mean(correctness) + "%");
 	}
 	
 	/*
@@ -187,6 +187,7 @@ public class TenFoldClassification {
 			for (String classification: allClassifications) {
 				System.out.print(classification + " ");
 			}
+			System.out.println(); // get a new line
 			return allClassifications.toArray(new String[allClassifications.size()]);
 			
 		} catch (FileNotFoundException e) {

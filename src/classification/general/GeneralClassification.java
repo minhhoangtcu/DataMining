@@ -33,8 +33,6 @@ public class GeneralClassification {
 			nameOfMode = "normalization with min and max";
 		}
 		
-		
-		
 		int corrects = 0;
 		int numberOfTrials = testItems.length;
 		
@@ -50,7 +48,7 @@ public class GeneralClassification {
 			if (result.equals(expected)) corrects++;
 		}
 		double correctness = 100*corrects/numberOfTrials;
-		System.out.printf("Using %s, the classification is %.2f correct%n", nameOfMode, correctness);
+		System.out.printf("Using %s, the classification is %.2f%% correct%n", nameOfMode, correctness);
 		return correctness;
 	}
 	
