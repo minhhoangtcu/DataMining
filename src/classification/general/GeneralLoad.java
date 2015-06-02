@@ -4,11 +4,10 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Stream;
+import org.apache.commons.math3.stat.StatUtils;
 
 import classification.Normalization;
 
@@ -24,6 +23,8 @@ public class GeneralLoad {
 	private double[][] values;
 	private double[] medians;
 	private double[] absoluteSD;
+	private double[] max;
+	private double[] min;
 	
 	//UNCOMMENT FOR TEST
 	public static void main(String[] args) {
@@ -37,6 +38,8 @@ public class GeneralLoad {
 		double[][] values = setValues(allItems);
 		setMedian(values);
 		setAbsoluteSD(values);
+		setMax(values);
+		setMin(values);
 	}
 
 	/*
@@ -130,6 +133,30 @@ public class GeneralLoad {
 		for (int i = 0; i < numberOfAttributes; i++) {
 			absoluteSD[i] = normal.getAbsoluteSD(values[i]);
 		}
+	}
+	
+	private void setMax(double[][] values) {
+		int numberOfAttributes = values.length;
+		max = new double[numberOfAttributes];
+		for (int i = 0; i < numberOfAttributes; i++) {
+			max[i] =  StatUtils.max(values[i]);
+		}
+	}
+	
+	private void setMin(double[][] values) {
+		int numberOfAttributes = values.length;
+		min = new double[numberOfAttributes];
+		for (int i = 0; i < numberOfAttributes; i++) {
+			min[i] =  StatUtils.min(values[i]);
+		}
+	}
+	
+	public double[] getMin() {
+		return min;
+	}
+	
+	public double[] getMax() {
+		return max;
 	}
 	
 	public double[] getMedian() {

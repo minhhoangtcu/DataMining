@@ -1,5 +1,6 @@
 package classification;
 
+import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
 public class Normalization {
@@ -53,6 +54,11 @@ public class Normalization {
 		return normalized;
 	}
 	
+	public double getModifiedNormalization2(double input, double min, double max) {
+		double normalized = (input - min) / (max - min);
+		return normalized;
+	}
+	
 	public double getAbsoluteSD(double[] input) {
 		double sum = 0;
 		double median = getMedian(input);
@@ -64,10 +70,6 @@ public class Normalization {
 	}
 	
 	public double getMedian(double[] input) {
-		DescriptiveStatistics stats = new DescriptiveStatistics();
-		for (double value: input) {
-			stats.addValue((double) value);
-		}
-		return stats.getPercentile(50);
+		return StatUtils.percentile(input, 50);
 	}
 }
