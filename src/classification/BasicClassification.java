@@ -8,23 +8,6 @@ import org.apache.commons.math3.ml.distance.ManhattanDistance;
 
 public class BasicClassification {
 	
-	public static void main(String[] args) {
-		BasicClassification classification = new BasicClassification();
-		//Athlete testAthlete = new Athlete("Minh Hoang", "Gymnastics", 49, 90);
-		//System.out.println(classification.findNearestMatch(testAthlete));
-		//System.out.printf("Using no normalization, we classified %s(%s) as %s%n", testAthlete.getName(), testAthlete.getClassification(), classification.classify(testAthlete, 1));
-		//System.out.println(classification.findNearestMatchNormalized(testAthlete));
-		//System.out.printf("Using normalization, we classified %s(%s) as %s%n", testAthlete.getName(), testAthlete.getClassification(), classification.classify(testAthlete, 2));
-		
-		//Athlete testAthlete2 = new Athlete("Qiushuang Huang", "Gymnastics", 61, 95);
-		//System.out.printf("Using no normalization, we classified %s(%s) as %s%n", testAthlete2.getName(), testAthlete2.getClassification(), classification.classify(testAthlete2, 1));
-		//System.out.printf("Using normalization, we classified %s(%s) as %s%n", testAthlete2.getName(), testAthlete2.getClassification(), classification.classify(testAthlete2, 2));
-		//System.out.println(classification.findNearestMatch(testAthlete2));
-		//System.out.println(classification.findNearestMatchNormalized(testAthlete2));
-		
-		
-	}
-	
 	public String classify(Athlete athlete, int mode) {
 		Athlete closest = null;
 		if (mode == 1)
