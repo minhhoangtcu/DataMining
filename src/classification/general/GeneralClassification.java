@@ -1,7 +1,9 @@
 package classification.general;
 
 import java.util.TreeMap;
+
 import org.apache.commons.math3.ml.distance.ManhattanDistance;
+
 import classification.Normalization;
 
 
@@ -11,124 +13,90 @@ public class GeneralClassification {
 		GeneralLoad loadTest = new GeneralLoad(testingDir);
 		GeneralLoad loadTraining = new GeneralLoad(trainingDir);
 		Item[] testItems = loadTest.getItems();
-		double[] medians = loadTraining.getMedian();
-		double[] absoluteSD = loadTraining.getAbsoluteSD();
-		double[] min = loadTraining.getMin();
-		double[] max = loadTraining.getMax();
-		
-		int corrects = 0;
-		int numberOfTrials = testItems.length;
+		int numberOfItems = loadTraining.getItems().length;
+		double[] medians = new double[numberOfItems];
+		double[] absoluteSD = new double[numberOfItems];
+		double[] min = new double[numberOfItems];
+		double[] max = new double[numberOfItems];
 		String nameOfMode = null;
 		if (mode == 0) {
 			nameOfMode = "NO normalization";
-			for (Item itemInArray: testItems) {
-				String result = classify(itemInArray, loadTraining); // Using training to classify items
-				String expected = itemInArray.getClassification();
-				if (result.equals(expected)) corrects++;
-			}
 		}
 		else if (mode == 1) {
+			medians = loadTraining.getMedian();
+			absoluteSD = loadTraining.getAbsoluteSD();
 			nameOfMode = "normalization with median and absolute SD";
-			for (Item itemInArray: testItems) {
-				itemInArray = normalizeItem(itemInArray, medians, absoluteSD);
-				String result = classifyNormalize(itemInArray, loadTraining); // Using training to classify items
-				String expected = itemInArray.getClassification();
-				if (result.equals(expected)) corrects++;
-			}
 		}
 		else if (mode == 2) {
+			min = loadTraining.getMin();
+			max = loadTraining.getMax();
 			nameOfMode = "normalization with min and max";
-			for (Item itemInArray: testItems) {
-				itemInArray = normalizeItem2(itemInArray, min, max);
-				String result = classifyNormalize2(itemInArray, loadTraining); // Using training to classify items
-				String expected = itemInArray.getClassification();
-				if (result.equals(expected)) corrects++;
+		}
+		
+		
+		
+		int corrects = 0;
+		int numberOfTrials = testItems.length;
+		
+		for (Item itemInArray: testItems) {
+			if (mode == 1) {
+				itemInArray = normalizeItem(itemInArray, medians, absoluteSD);
 			}
+			else if (mode == 2) {
+				itemInArray = normalizeItem(itemInArray, min, max);
+			}
+			String result = classify(itemInArray, loadTraining, mode); // Using training to classify items
+			String expected = itemInArray.getClassification();
+			if (result.equals(expected)) corrects++;
 		}
 		double correctness = 100*corrects/numberOfTrials;
 		System.out.printf("Using %s, the classification is %.2f correct%n", nameOfMode, correctness);
 		return correctness;
 	}
 	
-	public String classifyNormalize(Item itemToClassify, GeneralLoad load) {
-		Item closest = findNearestMatchNormalize(itemToClassify, load);
-		return closest.getClassification();
-	}
-	
-	public String classifyNormalize2(Item itemToClassify, GeneralLoad load) {
-		Item closest = findNearestMatchNormalize2(itemToClassify, load);
-		return closest.getClassification();
-	}
-	
-	public String classify(Item itemToClassify, GeneralLoad load) {
-		Item closest = findNearestMatch(itemToClassify, load);
+	public String classify(Item itemToClassify, GeneralLoad load, int mode) {
+		Item closest = findNearestMatch(itemToClassify, load, mode);
 		return closest.getClassification();
 	}
 	
 	/*
-	 * After normalization, find the nearest match in distance(Manhattan distance) to the item, using the data from a load file (getting all items, medians and absolute sd)
+	 * Find the nearest match in distance(Manhattan distance) to the item, using the data from a load file
 	 * @param item to find the nearest match.
 	 * @param data to execute the method
+	 * @param the mode to normalize attributes of items
 	 * @return the nearest item to the input item
 	 */
-	public Item findNearestMatchNormalize(Item itemToFind, GeneralLoad load) {
+	public Item findNearestMatch(Item itemToFind, GeneralLoad load, int mode) {
 		Item[] allItems = load.getItems();
-		double[] medians = load.getMedian();
-		double[] absoluteSD = load.getAbsoluteSD();
 		TreeMap<Double, Item> distancesOfItems = new TreeMap<>();
+		int numberOfItems = allItems.length;
+		double[] medians = new double[numberOfItems];
+		double[] absoluteSD = new double[numberOfItems];
+		double[] min = new double[numberOfItems];
+		double[] max = new double[numberOfItems];
 		
-		itemToFind = normalizeItem(itemToFind, medians, absoluteSD);
-		for (Item itemInList: allItems) {
-			itemInList = normalizeItem(itemInList, medians, absoluteSD);
-			if (!itemInList.equals(itemToFind)) {
-				double distance = getDistanceNormalize(itemInList, itemToFind);
-				distancesOfItems.put(distance, itemInList);
-				//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
-			}
+		// Initialize required data for normalization
+		if (mode == 1) {
+			medians = load.getMedian();
+			absoluteSD = load.getAbsoluteSD();
+			itemToFind = normalizeItem(itemToFind, medians, absoluteSD);
 		}
-		return distancesOfItems.firstEntry().getValue();
-	}
-	
-	/*
-	 * After normalization, find the nearest match in distance(Manhattan distance) to the item, using the data from a load file (getting all items, medians and absolute sd)
-	 * @param item to find the nearest match.
-	 * @param data to execute the method
-	 * @return the nearest item to the input item
-	 */
-	public Item findNearestMatchNormalize2(Item itemToFind, GeneralLoad load) {
-		Item[] allItems = load.getItems();
-		double[] min = load.getMin();
-		double[] max = load.getMax();
-		TreeMap<Double, Item> distancesOfItems = new TreeMap<>();
-		
-		itemToFind = normalizeItem2(itemToFind, min, max);
-		for (Item itemInList: allItems) {
-			itemInList = normalizeItem2(itemInList, min, max);
-			if (!itemInList.equals(itemToFind)) {
-				double distance = getDistanceNormalize(itemInList, itemToFind);
-				distancesOfItems.put(distance, itemInList);
-				//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
-			}
+		else if (mode == 2) {
+			min = load.getMin();
+			max = load.getMax();
+			itemToFind = normalizeItem(itemToFind, min, max);
 		}
-		return distancesOfItems.firstEntry().getValue();
-	}
-	
-	/*
-	 * WITHOUT normalization, find the nearest match in distance(Manhattan distance) to the item, using the data from a load file
-	 * @param item to find the nearest match.
-	 * @param data to execute the method
-	 * @return the nearest item to the input item
-	 */
-	public Item findNearestMatch(Item itemToFind, GeneralLoad load) {
-		Item[] allItems = load.getItems();
-		TreeMap<Double, Item> distancesOfItems = new TreeMap<>();
 		
+		// Go through all the element and get the distance.
 		for (Item itemInList: allItems) {
-			if (!itemInList.equals(itemToFind)) {
-				double distance = getDistance(itemInList, itemToFind);
-				distancesOfItems.put(distance, itemInList);
-				//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
-			}
+			if (mode == 1) 
+				itemInList = normalizeItem(itemInList, medians, absoluteSD);
+			if (mode == 2)
+				itemInList = normalizeItem(itemInList, min, max);
+			
+			double distance = getDistance(itemInList, itemToFind, mode);
+			distancesOfItems.put(distance, itemInList);
+			//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
 		}
 		return distancesOfItems.firstEntry().getValue();
 	}
@@ -140,45 +108,22 @@ public class GeneralClassification {
 	 * @param an array of absoluteSD. 
 	 * @return an item with all attributes normalized  
 	 */
-	private Item normalizeItem(Item itemToNormalize, double[] medians, double[] absoluteSD) {
+	private Item normalizeItem(Item itemToNormalize, double[] arrayOfValues1, double[] arrayOfValues2) {
 		Normalization normal = new Normalization();
 		double[] allAttributes = itemToNormalize.getAttributes();
 		double[] normalized = new double[allAttributes.length];
 		
 		for (int i = 0; i < allAttributes.length; i++) {
-			normalized[i] = normal.getModifiedNormalization(allAttributes[i], medians[i], absoluteSD[i]);
+			normalized[i] = normal.getModifiedNormalization(allAttributes[i], arrayOfValues1[i], arrayOfValues2[i]);
 		}
 		itemToNormalize.setNormalizedAttributes(normalized);
 		return itemToNormalize;
 	}
 	
-
-	/*
-	 * Normalize all attributes of an item using min and max
-	 * @param an item to normalize
-	 * @param an array of min. Each index is the medians of all attributes.
-	 * @param an array of max. 
-	 * @return an item with all attributes normalized  
-	 */
-	private Item normalizeItem2(Item itemToNormalize, double[] min, double[] max) {
-		Normalization normal = new Normalization();
-		double[] allAttributes = itemToNormalize.getAttributes();
-		double[] normalized = new double[allAttributes.length];
-		
-		for (int i = 0; i < allAttributes.length; i++) {
-			normalized[i] = normal.getModifiedNormalization2(allAttributes[i], min[i], max[i]);
-		}
-		itemToNormalize.setNormalizedAttributes(normalized);
-		return itemToNormalize;
-	}
-	
-	public double getDistanceNormalize(Item first, Item second) {
+	public double getDistance(Item first, Item second, int mode) {
 		ManhattanDistance distance = new ManhattanDistance();
-		return distance.compute(first.getNormalizedAttributes(), second.getNormalizedAttributes());
-	}
-	
-	public double getDistance(Item first, Item second) {
-		ManhattanDistance distance = new ManhattanDistance();
-		return distance.compute(first.getAttributes(), second.getAttributes());
+		if (mode == 0) return distance.compute(first.getAttributes(), second.getAttributes());
+		else if (mode == 1 | mode == 2) return distance.compute(first.getNormalizedAttributes(), second.getNormalizedAttributes());
+		else throw new IllegalArgumentException("Mode not avaiable");
 	}
 }

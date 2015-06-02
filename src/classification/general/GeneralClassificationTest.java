@@ -24,7 +24,7 @@ public class GeneralClassificationTest {
 		double correctIris0 = classification.computeCorrectness(0, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
 		assertEquals(correctIris0, 100, 0.1);
 		double correctIris1 = classification.computeCorrectness(1, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
-		assertEquals(correctIris1, 90, 0.1);
+		assertEquals(correctIris1, 93, 0.1);
 		double correctIris2 = classification.computeCorrectness(2, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
 		assertEquals(correctIris2, 96, 0.1);
 	}
