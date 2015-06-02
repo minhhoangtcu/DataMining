@@ -23,11 +23,16 @@ public class GeneralLoad {
 	
 	//UNCOMMENT FOR TEST
 	public static void main(String[] args) {
-		GeneralLoad load = new GeneralLoad();
-		Item[] allItems = load.loadFile(GeneralLoad.MPGTEST);
-		double[][] allValues = load.setValues(allItems);
-		System.out.println("Medians: " + Arrays.toString(load.getMedian(allValues)));
-		System.out.println("Absolute SD: " + Arrays.toString(load.getAbsoluteSD(allValues)));
+		GeneralLoad load = new GeneralLoad(MPGTRAINING);
+		System.out.println("Medians: " + Arrays.toString(load.getMedian()));
+		System.out.println("Absolute SD: " + Arrays.toString(load.getAbsoluteSD()));
+	}
+	
+	public GeneralLoad(String fileDir) {
+		Item[] allItems = loadFile(fileDir);
+		double[][] values = setValues(allItems);
+		setMedian(values);
+		setAbsoluteSD(values);
 	}
 
 	/*
@@ -91,7 +96,7 @@ public class GeneralLoad {
 		return items;
 	}
 	
-	public double[][] setValues(Item[] input) {
+	private double[][] setValues(Item[] input) {
 		int numberOfAttributes = input[0].getAttributes().length; // Get the number of attributes by inspecting the first item in the array
 		int numberOfItems = input.length;
 		
@@ -105,23 +110,29 @@ public class GeneralLoad {
 		return values;
 	}
 	
-	public double[] getMedian(double[][] values) {
+	private void setMedian(double[][] values) {
 		ModifiedNormalization normal = new ModifiedNormalization();
 		int numberOfAttributes = values.length;
 		medians = new double[numberOfAttributes]; 
 		for (int i = 0; i < numberOfAttributes; i++) {
 			medians[i] = normal.getMedian(values[i]);
 		}
-		return medians;
 	}
 	
-	public double[] getAbsoluteSD(double[][] values) {
+	private void setAbsoluteSD(double[][] values) {
 		ModifiedNormalization normal = new ModifiedNormalization();
 		int numberOfAttributes = values.length;
 		absoluteSD = new double[numberOfAttributes]; 
 		for (int i = 0; i < numberOfAttributes; i++) {
 			absoluteSD[i] = normal.getAbsoluteSD(values[i]);
 		}
+	}
+	
+	public double[] getMedian() {
+		return medians;
+	}
+	
+	public double[] getAbsoluteSD() {
 		return absoluteSD;
 	}
 	

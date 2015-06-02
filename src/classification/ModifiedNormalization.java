@@ -49,6 +49,9 @@ public class ModifiedNormalization {
 	}
 	
 	public double getModifiedNormalization(double input, double median, double absoluteSD) {
+		double normalized = (input - median) / absoluteSD;
+		return normalized;
+	}
 	
 	public double getAbsoluteSD(double[] input) {
 		double sum = 0;
