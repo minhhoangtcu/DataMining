@@ -2,15 +2,15 @@ package classification.general;
 
 import java.util.TreeMap;
 import org.apache.commons.math3.ml.distance.ManhattanDistance;
-import classification.ModifiedNormalization;
+import classification.Normalization;
 
 
 public class GeneralClassification {
 	
 	public static void main(String[] args) {
 		GeneralClassification classification = new GeneralClassification();
-		GeneralLoad loadTest = new GeneralLoad(GeneralLoad.MPGTEST);
-		GeneralLoad loadTraining = new GeneralLoad(GeneralLoad.MPGTRAINING);
+		GeneralLoad loadTest = new GeneralLoad(GeneralLoad.ATHLETETEST);
+		GeneralLoad loadTraining = new GeneralLoad(GeneralLoad.ATHLETETRAINING);
 		Item[] testItems = loadTest.getItems();
 		double[] medians = loadTraining.getMedian();
 		double[] absoluteSD = loadTraining.getAbsoluteSD();
@@ -33,7 +33,7 @@ public class GeneralClassification {
 			if (result.equals(expected)) corrects++;
 		}
 		correctness = 100*corrects/numberOfTrials;
-		System.out.printf("the classification is %.2f correct%n", correctness);
+		System.out.printf("Using NO normalizing, the classification is %.2f correct%n", correctness);
 	}
 	
 	
@@ -100,7 +100,7 @@ public class GeneralClassification {
 	 * @return an item with all attributes normalized  
 	 */
 	private Item normalizeItem(Item itemToNormalize, double[] medians, double[] absoluteSD) {
-		ModifiedNormalization normal = new ModifiedNormalization();
+		Normalization normal = new Normalization();
 		double[] allAttributes = itemToNormalize.getAttributes();
 		double[] normalized = new double[allAttributes.length];
 		

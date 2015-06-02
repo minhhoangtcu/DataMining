@@ -44,7 +44,7 @@ public class BasicClassification {
 	}
 	
 	public Athlete[] setNormalizedValues(Athlete[] allAthletes) {
-		ModifiedNormalization normal = new ModifiedNormalization();
+		Normalization normal = new Normalization();
 		int[] allWeight = new int[allAthletes.length];
 		int[] allHeight = new int[allAthletes.length];
 		for (int i = 0; i < allAthletes.length; i++) {

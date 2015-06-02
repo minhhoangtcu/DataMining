@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import classification.ModifiedNormalization;
+import classification.Normalization;
 
 public class GeneralLoad {	
 	static final String MPGTRAINING = "data\\mpgTrainingSet.txt";
@@ -115,7 +115,7 @@ public class GeneralLoad {
 	}
 	
 	private void setMedian(double[][] values) {
-		ModifiedNormalization normal = new ModifiedNormalization();
+		Normalization normal = new Normalization();
 		int numberOfAttributes = values.length;
 		medians = new double[numberOfAttributes]; 
 		for (int i = 0; i < numberOfAttributes; i++) {
@@ -124,7 +124,7 @@ public class GeneralLoad {
 	}
 	
 	private void setAbsoluteSD(double[][] values) {
-		ModifiedNormalization normal = new ModifiedNormalization();
+		Normalization normal = new Normalization();
 		int numberOfAttributes = values.length;
 		absoluteSD = new double[numberOfAttributes]; 
 		for (int i = 0; i < numberOfAttributes; i++) {

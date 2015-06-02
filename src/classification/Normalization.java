@@ -2,7 +2,7 @@ package classification;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-public class ModifiedNormalization {
+public class Normalization {
 	
 	public double getMedian(int[] input) {
 		DescriptiveStatistics stats = new DescriptiveStatistics();
