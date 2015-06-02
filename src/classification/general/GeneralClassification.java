@@ -9,14 +9,6 @@ public class GeneralClassification {
 	
 	public static void main(String[] args) {
 		GeneralClassification classification = new GeneralClassification();
-		
-		/*String classificationName = "20";
-		double[] attributes = {8, 307.0, 130.0, 3504, 12.0};
-		String[] comments = {"chevrolet chevelle malibu"};
-		Item testItem = new Item(classificationName, attributes, comments);
-		System.out.println(classification.findNearestMatch(testItem, GeneralLoad.MPGTRAINING));
-		*/
-		
 		GeneralLoad loadTest = new GeneralLoad(GeneralLoad.MPGTEST);
 		GeneralLoad loadTraining = new GeneralLoad(GeneralLoad.MPGTRAINING);
 		Item[] testItems = loadTest.getItems();
