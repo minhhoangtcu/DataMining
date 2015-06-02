@@ -19,36 +19,74 @@ public class GeneralClassification {
 		int numberOfTrials = testItems.length;
 		for (Item itemInArray: testItems) {
 			itemInArray = classification.normalizeItem(itemInArray, medians, absoluteSD);
+			String result = classification.classifyNormalize(itemInArray, loadTraining); // Using training to classify items
+			String expected = itemInArray.getClassification();
+			if (result.equals(expected)) corrects++;
+		}
+		double correctness = 100*corrects/numberOfTrials;
+		System.out.printf("Using normalization technique, the classification is %.2f correct%n", correctness);
+		
+		corrects = 0;
+		for (Item itemInArray: testItems) {
 			String result = classification.classify(itemInArray, loadTraining); // Using training to classify items
 			String expected = itemInArray.getClassification();
 			if (result.equals(expected)) corrects++;
 		}
-		
-		double correctness = 100*corrects/numberOfTrials;
-		System.out.printf("The classification is %.2f correct%n", correctness);
+		correctness = 100*corrects/numberOfTrials;
+		System.out.printf("the classification is %.2f correct%n", correctness);
 	}
 	
 	
+	
+	public String classifyNormalize(Item itemToClassify, GeneralLoad load) {
+		Item closest = findNearestMatchNormalize(itemToClassify, load);
+		return closest.getClassification();
+	}
 	
 	public String classify(Item itemToClassify, GeneralLoad load) {
 		Item closest = findNearestMatch(itemToClassify, load);
 		return closest.getClassification();
 	}
 	
-	public Item findNearestMatch(Item itemToFind, GeneralLoad load) {
+	/*
+	 * After normalization, find the nearest match in distance(Manhattan distance) to the item, using the data from a load file (getting all items, medians and absolute sd)
+	 * @param item to find the nearest match.
+	 * @param data to execute the method
+	 * @return the nearest item to the input item
+	 */
+	public Item findNearestMatchNormalize(Item itemToFind, GeneralLoad load) {
 		Item[] allItems = load.getItems();
 		double[] medians = load.getMedian();
 		double[] absoluteSD = load.getAbsoluteSD();
 		TreeMap<Double, Item> distancesOfItems = new TreeMap<>();
-		//values = setNormalizedValue(values); // Normalize values.
 		
 		itemToFind = normalizeItem(itemToFind, medians, absoluteSD);
 		for (Item itemInList: allItems) {
 			itemInList = normalizeItem(itemInList, medians, absoluteSD);
 			if (!itemInList.equals(itemToFind)) {
+				double distance = getDistanceNormalize(itemInList, itemToFind);
+				distancesOfItems.put(distance, itemInList);
+				//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
+			}
+		}
+		return distancesOfItems.firstEntry().getValue();
+	}
+	
+	/*
+	 * WITHOUT normalization, find the nearest match in distance(Manhattan distance) to the item, using the data from a load file
+	 * @param item to find the nearest match.
+	 * @param data to execute the method
+	 * @return the nearest item to the input item
+	 */
+	public Item findNearestMatch(Item itemToFind, GeneralLoad load) {
+		Item[] allItems = load.getItems();
+		TreeMap<Double, Item> distancesOfItems = new TreeMap<>();
+		
+		for (Item itemInList: allItems) {
+			if (!itemInList.equals(itemToFind)) {
 				double distance = getDistance(itemInList, itemToFind);
 				distancesOfItems.put(distance, itemInList);
-				System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
+				//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
 			}
 		}
 		return distancesOfItems.firstEntry().getValue();
@@ -73,27 +111,13 @@ public class GeneralClassification {
 		return itemToNormalize;
 	}
 	
-	/*
-	 * @param take a 2d array of double
-	 * @return normalize all the values in the input 
-	 
-	public double[][] setNormalizedValue(double[][] input, double[] medians, double[] absoluteSD) {
-		ModifiedNormalization normal = new ModifiedNormalization();
-		int numberOfAttributes = input.length;
-		int numberOfItems = input[0].length;
-		// Normalize the values
-		for (int i = 0; i < numberOfAttributes; i++) {
-			for (int j = 0; j < numberOfItems; j++) {
-				
-			}
-		}
-		System.out.println("Normalized: " + Arrays.deepToString(input));
-		return input;
+	public double getDistanceNormalize(Item first, Item second) {
+		ManhattanDistance distance = new ManhattanDistance();
+		return distance.compute(first.getNormalizedAttributes(), second.getNormalizedAttributes());
 	}
-	*/
 	
 	public double getDistance(Item first, Item second) {
 		ManhattanDistance distance = new ManhattanDistance();
-		return distance.compute(first.getNormalizedAttributes(), second.getNormalizedAttributes());
+		return distance.compute(first.getAttributes(), second.getAttributes());
 	}
 }

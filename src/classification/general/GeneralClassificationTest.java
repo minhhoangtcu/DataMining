@@ -21,7 +21,7 @@ public class GeneralClassificationTest {
 		int corrects = 0;
 		int numberOfTrials = allItems.length;
 		for (Item athleteInArray: allItems) {
-			String result = classification.classify(athleteInArray, GeneralLoad.MPGTRAINING);
+			String result = classification.classifyNormalize(athleteInArray, GeneralLoad.MPGTRAINING);
 			String expected = athleteInArray.getClassification();
 			if (result.equals(expected)) corrects++;
 		}
