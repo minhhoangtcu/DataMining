@@ -16,6 +16,10 @@ public class GeneralLoad {
 	static final String MPGTRAINING = "data\\mpgTrainingSet.txt";
 	static final String MPGTEST = "data\\mpgTestSet.txt";
 	static final String IRISTRAINING = "data\\irisTrainingSet.data";
+	static final String IRISTEST = "data\\irisTestSet.data";
+	static final String ATHLETETRAINING = "data\\athletesTrainingSet.txt";
+	static final String ATHLETETEST = "data\\athletesTestSet.txt";
+	
 	private Item[] items;
 	private double[][] values;
 	private double[] medians;
