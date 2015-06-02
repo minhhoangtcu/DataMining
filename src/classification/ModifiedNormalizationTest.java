@@ -34,9 +34,6 @@ public class ModifiedNormalizationTest {
 		int[] test1 = {43000, 45000, 55000, 69000, 70000, 75000, 105000, 115000};
 		double[] normalized = normal.getModifiedNormalization(test1);
 		assertEquals(normalized[5], 0.2876, 0.0001);
-		//for (double value: normalized) {
-		//	System.out.println(value);
-		//}
 	}
 	
 	@Test
@@ -44,6 +41,6 @@ public class ModifiedNormalizationTest {
 		ManhattanDistance distance = new ManhattanDistance();
 		double[] f1 = {-1.933, -1.218};
 		double[] f2 = {-2.773, -0.505};
-		System.out.println(distance.compute(f1, f2));
+		assertEquals(distance.compute(f1, f2), 1.553, 0.001);
 	}
 }
