@@ -7,13 +7,6 @@ import classification.Normalization;
 
 public class GeneralClassification {
 	
-	public static void main(String[] args) {
-		GeneralClassification classification = new GeneralClassification();
-		double correctMPG0 = classification.computeCorrectness(0, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
-		double correctMPG1 = classification.computeCorrectness(1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
-		double correctMPG2 = classification.computeCorrectness(2, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
-	}
-	
 	public double computeCorrectness(int mode, String trainingDir, String testingDir) {
 		GeneralLoad loadTest = new GeneralLoad(testingDir);
 		GeneralLoad loadTraining = new GeneralLoad(trainingDir);

@@ -1,10 +1,34 @@
 package classification.general;
 
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 public class GeneralClassificationTest {
 
+	@Test
+	public void correctnessTest() {
+		GeneralClassification classification = new GeneralClassification();
+		double correctMPG0 = classification.computeCorrectness(0, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(correctMPG0, 32, 0.1);
+		double correctMPG1 = classification.computeCorrectness(1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(correctMPG1, 56, 0.1);
+		double correctMPG2 = classification.computeCorrectness(2, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(correctMPG2, 54, 0.1);
+		double correctAthlete0 = classification.computeCorrectness(0, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(correctAthlete0, 80, 0.1);
+		double correctAthlete1 = classification.computeCorrectness(1, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(correctAthlete1, 80, 0.1);
+		double correctAthlete2 = classification.computeCorrectness(2, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(correctAthlete2, 80, 0.1);
+		double correctIris0 = classification.computeCorrectness(0, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(correctIris0, 100, 0.1);
+		double correctIris1 = classification.computeCorrectness(1, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(correctIris1, 90, 0.1);
+		double correctIris2 = classification.computeCorrectness(2, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(correctIris2, 96, 0.1);
+	}
+	
 	@Test
 	public void loadMPGTest() {
 		GeneralLoad load = new GeneralLoad(GeneralLoad.MPGTRAINING);
