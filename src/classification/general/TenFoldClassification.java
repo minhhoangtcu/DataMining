@@ -29,6 +29,7 @@ public class TenFoldClassification {
 		
 		classification.executeTenFondClassifition(folderDir, fileDir, prefixForBuckets, 0);
 	}
+	
 	/*
 	 * Split a dataset into n files. Go through each file, make it a testing file and use all other files as training file.
 	 * @param directory to the folder of the files.
