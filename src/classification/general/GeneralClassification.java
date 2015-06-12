@@ -1,11 +1,12 @@
 package classification.general;
 
+import java.util.ArrayList;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.commons.math3.ml.distance.ManhattanDistance;
 
 import classification.Normalization;
-
 
 public class GeneralClassification {
 	
@@ -57,6 +58,41 @@ public class GeneralClassification {
 		return closest.getClassification();
 	}
 	
+	public String classifyBasedOnKNearest(Item itemToClassify, GeneralLoad load, int mode, int k) {
+		Item[] nearestMatches = findKNearestMatch(itemToClassify, load, mode, k);
+		ArrayList<String> classifications = new ArrayList<>();
+		ArrayList<Integer> numberOfOccurences = new ArrayList<>();
+		
+		// Go through all the matches and make a frequency.
+		for (Item itemInArray: nearestMatches) {
+			String classificationOfItem = itemInArray.getClassification();
+			if (classifications.contains(classificationOfItem)) {
+				int index = classifications.indexOf(classificationOfItem);
+				int currentOccurence = numberOfOccurences.get(index);
+				int newOccurence = currentOccurence + 1;
+				numberOfOccurences.set(index, newOccurence);
+			}
+			else {
+				classifications.add(classificationOfItem);
+				numberOfOccurences.add(1);
+			}
+		}
+		
+		// Find the highest occurrences.
+		int max = 0;
+		int maxIndex = -1;
+		int currentIndex = 0;
+		for (int currentNumber: numberOfOccurences) {
+			if (max < currentNumber) {
+				max = currentNumber;
+				maxIndex = currentIndex;
+			}
+			currentIndex++;
+		}
+		return classifications.get(currentIndex);
+	}
+	
+	
 	/*
 	 * Find the nearest match in distance(Manhattan distance) to the item, using the data from a load file
 	 * @param item to find the nearest match.
@@ -65,6 +101,18 @@ public class GeneralClassification {
 	 * @return the nearest item to the input item
 	 */
 	public Item findNearestMatch(Item itemToFind, GeneralLoad load, int mode) {
+		Item nearestMatch = findKNearestMatch(itemToFind, load, mode, 3)[0];
+		return nearestMatch;
+	}
+	
+	/*
+	 * Find k nearest matches in distance to the item, using the data from a load file
+	 * @param item to find the nearest match.
+	 * @param data to execute the method
+	 * @param the mode to normalize attributes of items
+	 * @return the nearest item to the input item
+	 */
+	public Item[] findKNearestMatch(Item itemToFind, GeneralLoad load, int mode, int k) {
 		Item[] allItems = load.getItems();
 		TreeMap<Double, Item> distancesOfItems = new TreeMap<>();
 		int numberOfItems = allItems.length;
@@ -96,7 +144,19 @@ public class GeneralClassification {
 			distancesOfItems.put(distance, itemInList);
 			//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
 		}
-		return distancesOfItems.firstEntry().getValue();
+		
+		// Return k nearest items
+		Item[] output = new Item[k];
+		int count = 0;
+		for (Entry<Double, Item> entryInMap: distancesOfItems.entrySet()) {
+			if (count >= k) break;
+			output[count] = entryInMap.getValue();
+			double distance = entryInMap.getKey();
+			System.out.printf("%.2f between \t%s \t%s is \t%n", distance, output[count], itemToFind);
+			count++;
+		}
+		System.out.println("end");
+		return output;
 	}
 	
 	/*
