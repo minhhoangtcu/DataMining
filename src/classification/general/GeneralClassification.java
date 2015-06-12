@@ -10,7 +10,9 @@ import classification.Normalization;
 
 public class GeneralClassification {
 	
-	public double computeCorrectness(int mode, String trainingDir, String testingDir) {
+	final int K = 5;
+	
+	public double computeCorrectness(int computeMode, int classifyMode, String trainingDir, String testingDir) {
 		GeneralLoad loadTest = new GeneralLoad(testingDir);
 		GeneralLoad loadTraining = new GeneralLoad(trainingDir);
 		Item[] testItems = loadTest.getItems();
@@ -20,15 +22,15 @@ public class GeneralClassification {
 		double[] min = new double[numberOfItems];
 		double[] max = new double[numberOfItems];
 		String nameOfMode = null;
-		if (mode == 0) {
+		if (computeMode == 0) {
 			nameOfMode = "NO normalization";
 		}
-		else if (mode == 1) {
+		else if (computeMode == 1) {
 			medians = loadTraining.getMedian();
 			absoluteSD = loadTraining.getAbsoluteSD();
 			nameOfMode = "normalization with median and absolute SD";
 		}
-		else if (mode == 2) {
+		else if (computeMode == 2) {
 			min = loadTraining.getMin();
 			max = loadTraining.getMax();
 			nameOfMode = "normalization with min and max";
@@ -38,13 +40,15 @@ public class GeneralClassification {
 		int numberOfTrials = testItems.length;
 		
 		for (Item itemInArray: testItems) {
-			if (mode == 1) {
+			if (computeMode == 1) {
 				itemInArray = normalizeItem(itemInArray, medians, absoluteSD);
 			}
-			else if (mode == 2) {
+			else if (computeMode == 2) {
 				itemInArray = normalizeItem(itemInArray, min, max);
 			}
-			String result = classify(itemInArray, loadTraining, mode); // Using training to classify items
+			String result = null;
+			if (classifyMode == 1) result = classify(itemInArray, loadTraining, computeMode); // Using training to classify items
+			if (classifyMode == 2) result = classifyBasedOnKNearest(itemInArray, loadTraining, computeMode, K); // Using training to classify items
 			String expected = itemInArray.getClassification();
 			if (result.equals(expected)) corrects++;
 		}
@@ -89,7 +93,7 @@ public class GeneralClassification {
 			}
 			currentIndex++;
 		}
-		return classifications.get(currentIndex);
+		return classifications.get(maxIndex);
 	}
 	
 	
@@ -151,11 +155,11 @@ public class GeneralClassification {
 		for (Entry<Double, Item> entryInMap: distancesOfItems.entrySet()) {
 			if (count >= k) break;
 			output[count] = entryInMap.getValue();
-			double distance = entryInMap.getKey();
-			System.out.printf("%.2f between \t%s \t%s is \t%n", distance, output[count], itemToFind);
+			//double distance = entryInMap.getKey();
+			//System.out.printf("%.2f between \t%s \t%s is \t%n", distance, output[count], itemToFind);
 			count++;
 		}
-		System.out.println("end");
+		//System.out.println("end");
 		return output;
 	}
 	

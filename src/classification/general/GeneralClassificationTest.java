@@ -9,24 +9,47 @@ public class GeneralClassificationTest {
 	@Test
 	public void correctnessTest() {
 		GeneralClassification classification = new GeneralClassification();
-		double correctMPG0 = classification.computeCorrectness(0, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
-		assertEquals(correctMPG0, 32, 0.1);
-		double correctMPG1 = classification.computeCorrectness(1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
-		assertEquals(correctMPG1, 56, 0.1);
-		double correctMPG2 = classification.computeCorrectness(2, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
-		assertEquals(correctMPG2, 54, 0.1);
-		double correctAthlete0 = classification.computeCorrectness(0, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
-		assertEquals(correctAthlete0, 80, 0.1);
-		double correctAthlete1 = classification.computeCorrectness(1, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
-		assertEquals(correctAthlete1, 80, 0.1);
-		double correctAthlete2 = classification.computeCorrectness(2, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
-		assertEquals(correctAthlete2, 80, 0.1);
-		double correctIris0 = classification.computeCorrectness(0, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
-		assertEquals(correctIris0, 100, 0.1);
-		double correctIris1 = classification.computeCorrectness(1, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
-		assertEquals(correctIris1, 93, 0.1);
-		double correctIris2 = classification.computeCorrectness(2, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
-		assertEquals(correctIris2, 96, 0.1);
+		double correctMPG0 = classification.computeCorrectness(0, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(32, correctMPG0, 0.1);
+		double correctMPG1 = classification.computeCorrectness(1, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(56, correctMPG1, 0.1);
+		double correctMPG2 = classification.computeCorrectness(2, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(54, correctMPG2, 0.1);
+		double correctAthlete0 = classification.computeCorrectness(0, 1, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(80, correctAthlete0, 0.1);
+		double correctAthlete1 = classification.computeCorrectness(1, 1, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(80, correctAthlete1, 0.1);
+		double correctAthlete2 = classification.computeCorrectness(2, 1, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(80, correctAthlete2, 0.1);
+		double correctIris0 = classification.computeCorrectness(0, 1, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(100, correctIris0, 0.1);
+		double correctIris1 = classification.computeCorrectness(1, 1, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(93, correctIris1, 0.1);
+		double correctIris2 = classification.computeCorrectness(2, 1, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(96, correctIris2, 0.1);
+	}
+	
+	@Test
+	public void classifyNearestK() {
+		GeneralClassification classification = new GeneralClassification();
+		double correctMPG0 = classification.computeCorrectness(0, 2, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(46, correctMPG0, 0.1);
+		double correctMPG1 = classification.computeCorrectness(1, 2, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(66, correctMPG1, 0.1);
+		double correctMPG2 = classification.computeCorrectness(2, 2, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(62, correctMPG2, 0.1);
+		double correctAthlete0 = classification.computeCorrectness(0, 2, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(80, correctAthlete0, 0.1);
+		double correctAthlete1 = classification.computeCorrectness(1, 2, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(80, correctAthlete1, 0.1);
+		double correctAthlete2 = classification.computeCorrectness(2, 2, GeneralLoad.ATHLETETRAINING, GeneralLoad.ATHLETETEST);
+		assertEquals(80, correctAthlete2, 0.1);
+		double correctIris0 = classification.computeCorrectness(0, 2, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(100, correctIris0, 0.1);
+		double correctIris1 = classification.computeCorrectness(1, 2, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(100, correctIris1, 0.1);
+		double correctIris2 = classification.computeCorrectness(2, 2, GeneralLoad.IRISTRAINING, GeneralLoad.IRISTEST);
+		assertEquals(100, correctIris2, 0.1);
 	}
 	
 	@Test
