@@ -65,11 +65,17 @@ public class GeneralClassification {
 		return correctness;
 	}
 	
+	/*
+	 * Classify item using its nearest neighbor
+	 */
 	public String classify(Item itemToClassify, GeneralLoad load, int mode) {
 		Item closest = findNearestMatch(itemToClassify, load, mode);
 		return closest.getClassification();
 	}
 	
+	/*
+	 * Classify item usings its k-nearest neighbors 
+	 */
 	public String classifyBasedOnKNearest(Item itemToClassify, GeneralLoad load, int mode, int k) {
 		Item[] nearestMatches = findKNearestMatch(itemToClassify, load, mode, k);
 		ArrayList<String> classifications = new ArrayList<>();
@@ -103,7 +109,6 @@ public class GeneralClassification {
 		}
 		return classifications.get(maxIndex);
 	}
-	
 	
 	/*
 	 * Find the nearest match in distance(Manhattan distance) to the item, using the data from a load file
