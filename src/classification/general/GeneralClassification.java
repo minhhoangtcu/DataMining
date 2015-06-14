@@ -10,8 +10,16 @@ import classification.Normalization;
 
 public class GeneralClassification {
 	
-	final int K = 5;
+	static final int K = 5;
 	
+	/*
+	 * Compute correctness of ten-fold classification on the given training and testing data
+	 * @param computing mode. 0 to compute the distance between data entries with no normalization, 1 to compute with modified normalization and 2 to compute using min and max values among all entries
+	 * @param classify mode. 1 to classify an item by its nearest neighbor. 2 to classify an item by its k nearest neighbor. The value k is a static value of the class.
+	 * @param the directory of the training dataset
+	 * @param the directory of the testing dataset
+	 * @return the correctness using ten-fold classification. 
+	 */
 	public double computeCorrectness(int computeMode, int classifyMode, String trainingDir, String testingDir) {
 		GeneralLoad loadTest = new GeneralLoad(testingDir);
 		GeneralLoad loadTraining = new GeneralLoad(trainingDir);
