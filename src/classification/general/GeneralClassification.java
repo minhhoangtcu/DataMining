@@ -74,7 +74,7 @@ public class GeneralClassification {
 	}
 	
 	/*
-	 * Classify item usings its k-nearest neighbors 
+	 * Classify item using its k-nearest neighbors 
 	 */
 	public String classifyBasedOnKNearest(Item itemToClassify, GeneralLoad load, int mode, int k) {
 		Item[] nearestMatches = findKNearestMatch(itemToClassify, load, mode, k);
@@ -159,7 +159,6 @@ public class GeneralClassification {
 			
 			double distance = getDistance(itemInList, itemToFind, mode);
 			distancesOfItems.put(distance, itemInList);
-			//System.out.printf("Distance between \t%s \t%s is \t%.2f%n", itemInList, itemToFind, distance);
 		}
 		
 		// Return k nearest items
@@ -168,11 +167,8 @@ public class GeneralClassification {
 		for (Entry<Double, Item> entryInMap: distancesOfItems.entrySet()) {
 			if (count >= k) break;
 			output[count] = entryInMap.getValue();
-			//double distance = entryInMap.getKey();
-			//System.out.printf("%.2f between \t%s \t%s is \t%n", distance, output[count], itemToFind);
 			count++;
 		}
-		//System.out.println("end");
 		return output;
 	}
 	
@@ -195,6 +191,12 @@ public class GeneralClassification {
 		return itemToNormalize;
 	}
 	
+	/*
+	 * Compute the differences between 2 items by using Manhattan Distance. This method uses Apache Common Math
+	 * @param the first item
+	 * @param the second item
+	 * @return numeric value of differences by computing Manhattan Distance.
+	 */
 	public double getDistance(Item first, Item second, int mode) {
 		ManhattanDistance distance = new ManhattanDistance();
 		if (mode == 0) return distance.compute(first.getAttributes(), second.getAttributes());
