@@ -27,7 +27,7 @@ public class TenFoldClassification {
 		//classification.splitToNFiles(fileDir, prefixForBuckets, numberOfFiles);
 		//classification.combineFiles(folderDir, prefixForBuckets, 0, 1, 0);
 		
-		classification.executeTenFondClassifition(folderDir, fileDir, prefixForBuckets, 0);
+		classification.executeTenFondClassifition(folderDir, fileDir, prefixForBuckets, 0, 1);
 	}
 	
 	/*
@@ -35,9 +35,10 @@ public class TenFoldClassification {
 	 * @param directory to the folder of the files.
 	 * @param directory to the file that will be splitted
 	 * @param prefix for the splitted files
-	 * @param the type of normalization. 0 for no normalize. 1 for normalize using median and absolute SD. 2 for normalize using min and max 
+	 * @param the type of normalization. 0 for no normalize. 1 for normalize using median and absolute SD. 2 for normalize using min and max
+	 * @param classify mode. 1 to classify an item by its nearest neighbor. 2 to classify an item by its k nearest neighbor. The value k is a static value of the class. 
 	 */
-	public void executeTenFondClassifition(String folderDir, String fileDir, String prefixForBuckets, int mode) {
+	public void executeTenFondClassifition(String folderDir, String fileDir, String prefixForBuckets, int computeMode, int classifyMode) {
 		GeneralClassification classification = new GeneralClassification();
 		final int NUMBEROFSPLIT = 10; // Since this is ten-fold, we split files into 10 bits.
 		splitToNFiles(fileDir, prefixForBuckets, NUMBEROFSPLIT);
@@ -46,7 +47,7 @@ public class TenFoldClassification {
 		for (int i = 0; i < NUMBEROFSPLIT; i++) {
 			String trainingDir = combineFiles(folderDir, prefixForBuckets, 0, NUMBEROFSPLIT-1, i);
 			String testingDir = folderDir + "\\" + prefixForBuckets + i;
-			correctness[i] = classification.computeCorrectness(mode, trainingDir, testingDir);
+			correctness[i] = classification.computeCorrectness(computeMode, classifyMode, trainingDir, testingDir);
 		}
 		System.out.println("Mean correctness: " + StatUtils.mean(correctness) + "%");
 	}
