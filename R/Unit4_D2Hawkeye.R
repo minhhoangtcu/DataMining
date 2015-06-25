@@ -5,7 +5,6 @@
 
 # Read in the data
 Claims = read.csv("dataset/ClaimsData.csv")
-
 str(Claims)
 
 # Percentage of patients in each cost bucket
@@ -25,20 +24,27 @@ table(ClaimsTrain$diabetes)
 # VIDEO 7
 
 # Baseline method
-table(ClaimsTest$bucket2009, ClaimsTest$bucket2008)
+ClaimsTest$bucket2008new = 1
+str(ClaimsTest)
 
+table(ClaimsTest$bucket2009, ClaimsTest$bucket2008)
 (110138 + 10721 + 2774 + 1539 + 104)/nrow(ClaimsTest)
+
+tablenew = table(ClaimsTest$bucket2008new, ClaimsTest$bucket2009)
+tablenew 
+122978/nrow(ClaimsTest)
 
 # Penalty Matrix
 PenaltyMatrix = matrix(c(0,1,2,3,4,2,0,1,2,3,4,2,0,1,2,6,4,2,0,1,8,6,4,2,0), byrow=TRUE, nrow=5)
-
+PenaltyMatrixNew = matrix(c(0,2,4,6,8), byrow=TRUE, nrow=1)
 PenaltyMatrix
+PenaltyMatrixNew
 
 # Penalty Error of Baseline Method
 as.matrix(table(ClaimsTest$bucket2009, ClaimsTest$bucket2008))*PenaltyMatrix
-
+as.matrix(tablenew)*PenaltyMatrixNew
 sum(as.matrix(table(ClaimsTest$bucket2009, ClaimsTest$bucket2008))*PenaltyMatrix)/nrow(ClaimsTest)
-
+sum(as.matrix(tablenew)*PenaltyMatrixNew)/nrow(ClaimsTest)
 
 # VIDEO 8
 
