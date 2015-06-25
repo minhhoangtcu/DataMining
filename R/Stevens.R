@@ -1,3 +1,5 @@
+# CART
+
 # Read in the data
 stevens = read.csv("dataset/stevens.csv")
 str(stevens)
@@ -42,14 +44,12 @@ plot(perf)
 as.numeric(performance(pred, "auc")@y.values)
 
 
-# VIDEO 5 - Random Forests
+# Random Forests
 
 # Install randomForest package
 install.packages("randomForest")
 library(randomForest)
-
-# Build random forest model
-StevensForest = randomForest(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst, data = Train, ntree=200, nodesize=25 )
+set.seed(200)
 
 # Convert outcome to factor
 Train$Reverse = as.factor(Train$Reverse)
@@ -62,13 +62,19 @@ StevensForest = randomForest(Reverse ~ Circuit + Issue + Petitioner + Respondent
 PredictForest = predict(StevensForest, newdata = Test)
 table(Test$Reverse, PredictForest)
 (40+74)/(40+37+19+74)
+(44+76)/(44+33+17+76)
 
 
 
 # VIDEO 6
 
 # Install cross-validation packages
+install.packages("stringi")
+install.packages("class")
+install.packages("ggplot2")
 install.packages("caret")
+library(class)
+library(ggplot2)
 library(caret)
 install.packages("e1071")
 library(e1071)
@@ -82,6 +88,7 @@ train(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst
 
 # Create a new CART model
 StevensTreeCV = rpart(Reverse ~ Circuit + Issue + Petitioner + Respondent + LowerCourt + Unconst, data = Train, method="class", cp = 0.18)
+prp(StevensTreeCV)
 
 # Make predictions
 PredictCV = predict(StevensTreeCV, newdata = Test, type = "class")
