@@ -10,4 +10,6 @@ public class EdXExercise {
 		double EuclidDistance = distance.compute(godFather, titanic);
 		System.out.println(EuclidDistance);
 	}
-}
+	}
+
+
