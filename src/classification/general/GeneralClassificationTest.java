@@ -11,7 +11,13 @@ public class GeneralClassificationTest {
 		GeneralClassification classification = new GeneralClassification();
 		String[] predictTest = classification.predict(0, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
 		assertEquals(50, predictTest.length);
-		
+		String[] actual = classification.getActual(GeneralLoad.MPGTEST);
+		String[] top5 = java.util.Arrays.copyOfRange(actual, 0, 5);
+		String[] expectedTop5 = {"15", "15", "15", "15", "15"};
+		assertArrayEquals(expectedTop5, top5);
+		String[] top10 = java.util.Arrays.copyOfRange(actual, 0, 10);
+		String[] expectedTop10 = {"15", "15", "15", "15", "15", "25", "20", "20", "20", "25"};
+		assertArrayEquals(expectedTop10, top10);
 	}
 	
 	@Test
