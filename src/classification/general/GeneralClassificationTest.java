@@ -11,9 +11,7 @@ public class GeneralClassificationTest {
 		GeneralClassification classification = new GeneralClassification();
 		String[] predictTest = classification.predict(0, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
 		assertEquals(50, predictTest.length);
-		for (String ele: predictTest) {
-			System.out.print(ele + " ");
-		}
+		
 	}
 	
 	@Test

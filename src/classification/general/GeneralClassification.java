@@ -65,6 +65,24 @@ public class GeneralClassification {
 		return correctness;
 	}
 	
+	/*
+	 * Return all classification of a training/testing set
+	 * @param the directory of the dataset
+	 */
+	public String[] getActual(String testingDir) {
+		GeneralLoad loadTest = new GeneralLoad(testingDir);
+		Item[] testItems = loadTest.getItems();
+		int numberOfItems = testItems.length;
+		String[] actual = new String[numberOfItems];
+		
+		int index = 0;
+		for (Item item: testItems) {
+			actual[index] = item.getClassification();
+			index++;
+		}
+		
+		return actual;
+	}
 	
 	/*
 	 * Return an array of prediction
@@ -72,7 +90,7 @@ public class GeneralClassification {
 	 * @param classify mode. 1 to classify an item by its nearest neighbor. 2 to classify an item by its k nearest neighbor. The value k is a static value of the class.
 	 * @param the directory of the training dataset
 	 * @param the directory of the testing dataset
-	 * @return the correctness using ten-fold classification.
+	 * @return an array of predictions made from the certain model
 	 */
 	public String[] predict(int computeMode, int classifyMode, String trainingDir, String testingDir) {
 		GeneralLoad loadTest = new GeneralLoad(testingDir);
