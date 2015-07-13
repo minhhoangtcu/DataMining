@@ -29,3 +29,19 @@ test$Survived[test$Sex == 'female'] = 1
 test$Survived[test$Sex == 'female' & test$Pclass == 3 & test$Fare >= 20] = 0
 submit = data.frame(PassengerId = test$PassengerId, Survived = test$Survived)
 write.csv(submit, file = "Titanic01.csv", row.names = FALSE)
+
+# Plan a tree and Predict survival rate based on CART model
+library(rpart)
+library(rpart.plot)
+install.packages('rattle')
+install.packages('RColorBrewer')
+library(rattle)
+library(RColorBrewer)
+fit = rpart(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, data=train, method="class")
+plot(fit)
+text(fit)
+fancyRpartPlot(fit)
+Prediction = predict(fit, newdata=test, type = "class")
+submit = data.frame(PassengerId = test$PassengerId, Survived = Prediction)
+write.csv(submit, file = "Titanic02.csv", row.names = FALSE)
+
