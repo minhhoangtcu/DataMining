@@ -1,6 +1,9 @@
 package confusion.table;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.stream.Stream;
@@ -19,6 +22,13 @@ public class ConfusionTable {
 		String[] uniquePredict = new HashSet<String>(Arrays.asList(predict)).toArray(new String[0]);
 		String[] combinedClassifications = Stream.concat(Arrays.stream(uniqueActual), Arrays.stream(uniquePredict)).toArray(String[]::new);
 		String[] unique = new HashSet<String>(Arrays.asList(combinedClassifications)).toArray(new String[0]);
+		List<String> sortedClassNames = new ArrayList<String>();
+		for (String classification: unique) {
+			sortedClassNames.add(classification);
+		}		
+		Collections.sort(sortedClassNames);
+		unique = sortedClassNames.toArray(new String[0]);
+		
 		if ((actual.length != predict.length)) {
 			System.err.println("Actual and predict array must have same length or classifications.");
 			throw new IllegalArgumentException("Actual and predict array must have same length or classifications.");

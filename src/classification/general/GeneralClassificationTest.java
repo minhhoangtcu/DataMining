@@ -1,8 +1,8 @@
 package classification.general;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
+import confusion.table.*;
 
 public class GeneralClassificationTest {
 
@@ -18,6 +18,7 @@ public class GeneralClassificationTest {
 		String[] top10 = java.util.Arrays.copyOfRange(actual, 0, 10);
 		String[] expectedTop10 = {"15", "15", "15", "15", "15", "25", "20", "20", "20", "25"};
 		assertArrayEquals(expectedTop10, top10);
+		ConfusionTable.printTable(classification.getActual(GeneralLoad.MPGTEST), classification.predict(0, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST));
 	}
 	
 	@Test
