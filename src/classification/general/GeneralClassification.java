@@ -65,6 +65,59 @@ public class GeneralClassification {
 		return correctness;
 	}
 	
+	
+	/*
+	 * Return an array of prediction
+	 * @param computing mode. 0 to compute the distance between data entries with no normalization, 1 to compute with modified normalization and 2 to compute using min and max values among all entries
+	 * @param classify mode. 1 to classify an item by its nearest neighbor. 2 to classify an item by its k nearest neighbor. The value k is a static value of the class.
+	 * @param the directory of the training dataset
+	 * @param the directory of the testing dataset
+	 * @return the correctness using ten-fold classification.
+	 */
+	public String[] predict(int computeMode, int classifyMode, String trainingDir, String testingDir) {
+		GeneralLoad loadTest = new GeneralLoad(testingDir);
+		GeneralLoad loadTraining = new GeneralLoad(trainingDir);
+		Item[] testItems = loadTest.getItems();
+		int numberOfItems = loadTraining.getItems().length;
+		double[] medians = new double[numberOfItems];
+		double[] absoluteSD = new double[numberOfItems];
+		double[] min = new double[numberOfItems];
+		double[] max = new double[numberOfItems];
+		String nameOfMode = null;
+		if (computeMode == 0) {
+			nameOfMode = "NO normalization";
+		}
+		else if (computeMode == 1) {
+			medians = loadTraining.getMedian();
+			absoluteSD = loadTraining.getAbsoluteSD();
+			nameOfMode = "normalization with median and absolute SD";
+		}
+		else if (computeMode == 2) {
+			min = loadTraining.getMin();
+			max = loadTraining.getMax();
+			nameOfMode = "normalization with min and max";
+		}
+		
+		int numberOfTrials = testItems.length;
+		String[] prediction = new String[numberOfTrials];
+		int index = 0;
+		
+		for (Item itemInArray: testItems) {
+			if (computeMode == 1) {
+				itemInArray = normalizeItem(itemInArray, medians, absoluteSD);
+			}
+			else if (computeMode == 2) {
+				itemInArray = normalizeItem(itemInArray, min, max);
+			}		
+			
+			if (classifyMode == 1) prediction[index] = classify(itemInArray, loadTraining, computeMode); // Using training to classify items
+			if (classifyMode == 2) prediction[index] = classifyBasedOnKNearest(itemInArray, loadTraining, computeMode, K); // Using training to classify items					
+			index++;
+		}		
+		System.out.printf("Using %s, the prediction is completed%n", nameOfMode);
+		return prediction;
+	}
+	
 	/*
 	 * Classify item using its nearest neighbor
 	 */

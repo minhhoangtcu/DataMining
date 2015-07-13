@@ -7,6 +7,16 @@ import org.junit.Test;
 public class GeneralClassificationTest {
 
 	@Test
+	public void predictionTest() {
+		GeneralClassification classification = new GeneralClassification();
+		String[] predictTest = classification.predict(0, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
+		assertEquals(50, predictTest.length);
+		for (String ele: predictTest) {
+			System.out.print(ele + " ");
+		}
+	}
+	
+	@Test
 	public void correctnessTest() {
 		GeneralClassification classification = new GeneralClassification();
 		double correctMPG0 = classification.computeCorrectness(0, 1, GeneralLoad.MPGTRAINING, GeneralLoad.MPGTEST);
