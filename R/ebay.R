@@ -6,6 +6,14 @@ str(eBayTrain)
 summary(eBayTrain)
 str(eBayTest)
 
+library("ggplot2")
+# The cheaper the starting price, the higher chance the ipad are getting sold
+ggplot(eBayTrain, aes(x=startprice, color=sold)) + geom_histogram()
+# Biddable ipads are more likely to be sold
+aggregate(sold ~ biddable, data=eBayTrain, FUN=function(x) { sum(x)/length(x)}) 
+# Interesting enough, people actually buy broken ipad the most
+aggregate(sold ~ condition, data=eBayTrain, FUN=function(x) { sum(x)/length(x)}) 
+
 # Convert into factors
 eBayTrain$biddable = as.factor(eBayTrain$biddable)
 eBayTrain$condition = as.factor(eBayTrain$condition)
@@ -21,7 +29,6 @@ eBayTest$cellular = as.factor(eBayTest$cellular)
 eBayTest$carrier = as.factor(eBayTest$carrier)
 eBayTest$color = as.factor(eBayTest$color)
 eBayTest$storage = as.factor(eBayTest$storage)
-
 
 # Splitting training data
 library(caTools)
