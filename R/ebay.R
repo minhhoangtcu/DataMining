@@ -99,8 +99,7 @@ DescriptionWordsTest$storage = eBayTest$storage
 DescriptionWordsTest$productline = eBayTest$productline
 DescriptionWordsTest$WordCount = eBayTest$WordCount
 
-DescriptionWordsLog = glm(sold ~ ., data=DescriptionWordsTrain, family=binomial)
-PredTest = predict(DescriptionWordsLog, newdata=DescriptionWordsTest, type="response")
+
 
 #Test
 split = sample.split(DescriptionWordsTrain$sold, SplitRatio = 0.8)
@@ -121,8 +120,16 @@ accuracyForest = (cfmForest[1,1] + cfmForest[2,2])/nrow(test)
 accuracyForest
 
 # Submission
+DescriptionWordsLog = glm(sold ~ ., data=DescriptionWordsTrain, family=binomial)
+PredTest = predict(DescriptionWordsLog, newdata=DescriptionWordsTest, type="response")
 MySubmission = data.frame(UniqueID = eBayTest$UniqueID, Probability1 = PredTest)
 write.csv(MySubmission, "trash", row.names=FALSE)
+
+# Submission
+forestTest =randomForest(sold ~ . - productline, data = DescriptionWordsTrain)
+PredTest = predict(forestTest, newdata=DescriptionWordsTest, type="response")
+MySubmission = data.frame(UniqueID = eBayTest$UniqueID, Probability1 = PredTest)
+write.csv(MySubmission, "ebay05.csv", row.names=FALSE)
 
 # Print out submission
 submitModel = randomForest(sold ~ biddable + startprice + condition + cellular + color + storage, data = eBayTrain)
